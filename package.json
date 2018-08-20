@@ -1,0 +1,20 @@
+{
+  "name": "connymans-ss-skeleton",
+  "version": "1.0.0",
+  "description": "Base project folder for a SilverStripe ([http://silverstripe.org](http://silverstripe.org)) installation. Required modules are installed via [http://github.com/silverstripe/recipe-cms](http://github.com/silverstripe/recipe-cms). For information on how to change the dependencies in a recipe, please have a look at [https://github.com/silverstripe/recipe-plugin](https://github.com/silverstripe/recipe-plugin). In addition, installer includes [theme/simple](https://github.com/silverstripe-themes/silverstripe-simple) as a default theme.",
+  "main": "index.js",
+  "scripts": {
+    "once": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "author": "Conny Nyman",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "laravel-mix": "^2.1.11"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.1"
+  }
+}
