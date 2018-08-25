@@ -14,7 +14,8 @@ class AvailableOptionsAdmin extends ModelAdmin
 {
     private static $managed_models = [
         Category::class,
-        Type::class
+        Type::class,
+        Store::class,
     ];
 
     private static $url_segment = 'available-options';

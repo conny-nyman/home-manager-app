@@ -9,6 +9,7 @@
  * @property int $Sum
  * @method \SilverStripe\ORM\ManyManyList|\Category[] Categorys()
  * @method \SilverStripe\ORM\ManyManyList|\Type[] Types()
+ * @method \SilverStripe\ORM\ManyManyList|\Store[] Stores()
  * @method \SilverStripe\ORM\ManyManyList|\HouseMember[] HouseMembers()
  */
 
@@ -19,6 +20,7 @@ class Payment extends DataObject
     const SUM = 'Sum';
     const TYPES = Type::class . 's';
     const CATEGORYS = Category::class . 's';
+    const STORES = Store::class . 's';
     const HOUSE_MEMBERS = HouseMember::class . 's';
 
     private static $db = [
@@ -27,7 +29,8 @@ class Payment extends DataObject
 
     private static $many_many = [
         self::CATEGORYS => Category::class,
-        self::TYPES => Type::class
+        self::TYPES => Type::class,
+        self::STORES => Store::class
     ];
 
     private static $belongs_many_many = [
