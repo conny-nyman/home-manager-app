@@ -3,6 +3,13 @@
 use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\View\Requirements;
 
+/**
+ * Class \PageController
+ *
+ * @property \Page dataRecord
+ * @method \Page data()
+ * @mixin \Page dataRecord
+ */
 class PageController extends ContentController
 {
     /**
