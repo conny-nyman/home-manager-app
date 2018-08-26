@@ -52,25 +52,11 @@ class PaymentController extends Controller
      */
     public static function getPayments()
     {
-        if (!PermissionUtil::isMemberLoggedIn()) {
-            return false;
-        }
-
         if (PermissionUtil::isDefaultAdmin()) {
             return Payment::get();
         }
 
-        /** @var HouseMember $member */
-        $member = HouseMember::get()->byID(Security::getCurrentUser()->ID);
-        return $member->Payments();
-    }
-
-    /**
-     * @return \SilverStripe\ORM\DataList
-     */
-    public static function getUsers()
-    {
-        return HouseMember::get();
+        return Payment::get()->filter('HouseMembers.ManagementGroup.ID', PermissionUtil::getCurrentMemberGroup()->ID)->filter('Created:GreaterThanOrEqual', date('01-m-Y'));
     }
 
     public function saveCategory()

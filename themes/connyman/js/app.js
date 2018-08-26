@@ -32,7 +32,7 @@ let vm = new Vue({
         axios.get('http://localhost/house-manager-app/paymentendpoints/getEndpoints').then(response => this.endpoints = response.data);
     },
     methods: {
-        addCategory() {
+        saveCategory() {
             axios.post(this.endpoints.saveCategory,
                 JSON.stringify(this.paymentOptions.categoryTitle),
                 {
@@ -41,7 +41,7 @@ let vm = new Vue({
                     }
                 }).then(response => console.log(response));
         },
-        addType() {
+        saveType() {
             axios.post(this.endpoints.saveType,
                 JSON.stringify(this.paymentOptions.typeTitle),
                 {
@@ -50,7 +50,7 @@ let vm = new Vue({
                     }
                 }).then(response => console.log(response));
         },
-        addStore() {
+        saveStore() {
             axios.post(this.endpoints.saveStore,
                 JSON.stringify(this.paymentOptions.storeTitle),
                 {

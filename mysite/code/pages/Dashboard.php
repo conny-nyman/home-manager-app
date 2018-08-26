@@ -59,6 +59,14 @@ class DashboardController extends PageController
      */
     public function getUsers()
     {
-        return PaymentController::getUsers();
+        return PermissionUtil::getCurrentGroupMembers();
+    }
+
+    /**
+     * @return \SilverStripe\ORM\DataObject
+     */
+    public function getGroup()
+    {
+        return PermissionUtil::getCurrentMemberGroup();
     }
 }

@@ -24,4 +24,22 @@ class Type extends DataObject
     private static $belongs_many_many = [
         self::PAYMENTS => Payment::class
     ];
+
+    /**
+     * @return \SilverStripe\ORM\ValidationResult
+     */
+    public function validate()
+    {
+        $result = parent::validate();
+
+        if (empty($this->Title)) {
+            $result->addError('Title cannot be empty');
+        }
+
+        if (Store::get()->filter('Title', $this->Title)->exists()) {
+            $result->addError('A Type already exist with Title: ' . $this->Title);
+        }
+
+        return $result;
+    }
 }
