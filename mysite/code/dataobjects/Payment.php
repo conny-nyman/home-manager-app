@@ -41,6 +41,7 @@ class Payment extends DataObject
         self::SUM,
         'PaymentCategoryTitles' => 'Categories',
         'PaymentTypeTitles' => 'Types',
+        'PaymentStoreTitles' => 'Stores',
     ];
 
     public function PaymentCategoryTitles()
@@ -65,7 +66,25 @@ class Payment extends DataObject
     {
         $types = $this->Types();
         if ($this->ID === 0 || !$types) {
-            return 'Missing categories';
+            return 'Missing types';
+        }
+
+        $titles = '';
+        foreach ($types as $type) {
+            if ($titles === '') {
+                $titles .= $type->Title;
+            } else {
+                $titles .= ', ' . $type->Title;
+            }
+        }
+        return $titles;
+    }
+
+    public function PaymentStoreTitles()
+    {
+        $types = $this->Stores();
+        if ($this->ID === 0 || !$types) {
+            return 'Missing stores';
         }
 
         $titles = '';
