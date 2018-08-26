@@ -10,6 +10,8 @@
 | Features| Status|
 | ------ | ------ |
 | Dynamic frontend (Vue)| Under construction|
-| Replace DashboardController with PaymentController | Under construction |
+| Replace DashboardController with PaymentController | Implemented |
 | DataObject validation | Not implemented |
 | REST API| Not implemented |
+| Dynamic end points SiteConfig (get on Vue - created hook)| Implemented |
+| Require Auth | Not implemented |

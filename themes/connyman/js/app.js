@@ -20,11 +20,20 @@ let vm = new Vue({
             showCategoryField: false,
             showTypeField: false,
             showStoreField: false
+        },
+        endpoints: {
+            saveCategory: '',
+            saveType: '',
+            saveStore: '',
+            savePayment: ''
         }
+    },
+    created() {
+        axios.get('http://localhost/house-manager-app/paymentendpoints/getEndpoints').then(response => this.endpoints = response.data);
     },
     methods: {
         addCategory() {
-            axios.post('http://localhost/house-manager-app/paymentoptions/saveCategory',
+            axios.post(this.endpoints.saveCategory,
                 JSON.stringify(this.paymentOptions.categoryTitle),
                 {
                     headers: {
@@ -33,7 +42,7 @@ let vm = new Vue({
                 }).then(response => console.log(response));
         },
         addType() {
-            axios.post('http://localhost/house-manager-app/paymentoptions/saveType',
+            axios.post(this.endpoints.saveType,
                 JSON.stringify(this.paymentOptions.typeTitle),
                 {
                     headers: {
@@ -42,7 +51,7 @@ let vm = new Vue({
                 }).then(response => console.log(response));
         },
         addStore() {
-            axios.post('http://localhost/house-manager-app/paymentoptions/saveStore',
+            axios.post(this.endpoints.saveStore,
                 JSON.stringify(this.paymentOptions.storeTitle),
                 {
                     headers: {
@@ -51,13 +60,15 @@ let vm = new Vue({
                 }).then(response => console.log(response));
         },
         savePayment() {
-            axios.post('http://localhost/house-manager-app/payments/savePayment',
+            axios.post(this.endpoints.savePayment,
                 JSON.stringify(this.formData),
                 {
                     headers: {
                         'Content-type': 'application/json',
                     }
-                }).then(response => console.log(response));
+                })
+                .then(response => console.log(response))
+                .catch(error => { console.log(error) });
         }
     }
 });
