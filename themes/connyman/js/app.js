@@ -102,7 +102,7 @@ let vm = new Vue({
     methods: {
         getPayments() {
             axios({
-                url: 'http://localhost/house-manager-app/graphql',
+                url: 'graphql',
                 method: 'post',
                 data: {
                     query: `
