@@ -6,7 +6,7 @@
  * Date: 26/08/2018
  * Time: 14.51
  *
- * @property \SilverStripe\SiteConfig\SiteConfig|\HouseManagerSiteConfig $owner
+ * @property \HouseManagerSiteConfig $owner
  * @property string $SaveCategory
  * @property string $SaveType
  * @property string $SaveStore

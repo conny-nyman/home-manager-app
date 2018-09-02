@@ -1,6 +1,13 @@
 // Add your js here..
 import Vue from 'vue';
 import axios from 'axios';
+import moment from 'moment'
+
+Vue.filter('formatDate', value => {
+    if (value) {
+        return moment(String(value)).format('DD/MM/YYYY hh:mm')
+    }
+});
 
 let vm = new Vue({
     el: '#app',
@@ -21,19 +28,137 @@ let vm = new Vue({
             showTypeField: false,
             showStoreField: false
         },
-        endpoints: {
-            saveCategory: '',
-            saveType: '',
-            saveStore: '',
-            savePayment: ''
-        }
+        tableData: {
+            payments: {}
+        },
+        showTotalSumTables: false
     },
     created() {
-        axios.get('http://localhost/house-manager-app/paymentendpoints/getEndpoints').then(response => this.endpoints = response.data);
+        // TODO: Use apollo for graphql. (this is for testing)
+        this.getPayments();
+
+      //   axios({
+      //       url: 'http://localhost/house-manager-app/graphql',
+      //       method: 'post',
+      //       data: {
+      //           query: `
+      //   {
+      //     readManagementGroups {
+      //       edges {
+      //         node {
+      //           Name
+      //           ID
+      //           HouseMembers {
+      //             edges {
+      //               node {
+      //                 ID
+      //                 FirstName
+      //                 Surname
+      //                 Payments {
+      //                   edges {
+      //                     node {
+      //                       ID
+      //                       Sum
+      //                       Categorys {
+      //                         edges {
+      //                           node {
+      //                             ID
+      //                             Title
+      //                           }
+      //                         }
+      //                       }
+      //                       Types {
+      //                         edges {
+      //                           node {
+      //                             ID
+      //                             Title
+      //                           }
+      //                         }
+      //                       }
+      //                       Stores {
+      //                         edges {
+      //                           node {
+      //                             ID
+      //                             Title
+      //                           }
+      //                         }
+      //                       }
+      //                     }
+      //                   }
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // `
+      //       }
+      //   }).then(response => {
+      //       console.log(response.data);
+      //   });
     },
     methods: {
+        getPayments() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    {
+                      readPayments(CategoryIDs: "${this.formData.categoryIds.join(" ")}" TypeIDs: "${this.formData.typeIds.join(" ")}" StoreIDs: "${this.formData.storeIds.join(" ")}") {
+                        edges {
+                          node {
+                            ID
+                            Sum
+                            Created
+                            HouseMembers {
+                              edges {
+                                node {
+                                  ID
+                                  FirstName
+                                  Surname
+                                }
+                              }
+                            }
+                            Categorys {
+                              edges {
+                                node {
+                                  ID
+                                  Title
+                                }
+                              }
+                            }
+                            Types {
+                              edges {
+                                node {
+                                  ID
+                                  Title
+                                }
+                              }
+                            }
+                            Stores {
+                              edges {
+                                node {
+                                  ID
+                                  Title
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  `
+                }
+            }).then(response => {
+                console.log(response.data.data.readPayments);
+                this.tableData.payments = response.data.data.readPayments;
+            });
+        },
         saveCategory() {
-            axios.post(this.endpoints.saveCategory,
+            axios.post('paymentoptions/saveCategory',
                 JSON.stringify(this.paymentOptions.categoryTitle),
                 {
                     headers: {
@@ -42,7 +167,7 @@ let vm = new Vue({
                 }).then(response => console.log(response));
         },
         saveType() {
-            axios.post(this.endpoints.saveType,
+            axios.post('paymentoptions/saveType',
                 JSON.stringify(this.paymentOptions.typeTitle),
                 {
                     headers: {
@@ -51,7 +176,7 @@ let vm = new Vue({
                 }).then(response => console.log(response));
         },
         saveStore() {
-            axios.post(this.endpoints.saveStore,
+            axios.post('paymentoptions/saveStore',
                 JSON.stringify(this.paymentOptions.storeTitle),
                 {
                     headers: {
@@ -60,7 +185,7 @@ let vm = new Vue({
                 }).then(response => console.log(response));
         },
         savePayment() {
-            axios.post(this.endpoints.savePayment,
+            axios.post('payments/savePayment',
                 JSON.stringify(this.formData),
                 {
                     headers: {
@@ -68,7 +193,9 @@ let vm = new Vue({
                     }
                 })
                 .then(response => console.log(response))
-                .catch(error => { console.log(error) });
+                .catch(error => {
+                    console.log(error)
+                });
         }
     }
 });
