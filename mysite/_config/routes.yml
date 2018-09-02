@@ -1,0 +1,7 @@
+---
+Name: dashboardroutes
+---
+SilverStripe\Control\Director:
+  rules:
+    'payments//$Action': 'PaymentController'
+    'paymentoptions//$Action': 'PaymentController'
