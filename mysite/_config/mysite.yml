@@ -4,6 +4,56 @@ Name: myproject
 SilverStripe\Core\Manifest\ModuleManifest:
   project: mysite
 
-Silverstripe\SiteConfig\SiteConfig:
-  extensions:
-    - HouseManagerSiteConfig
+SilverStripe\GraphQL\Controller:
+  schema:
+    scaffolding:
+      types:
+        ManagementGroup:
+          fields:
+            ID: The unique identifier of the mGroup
+            Name: The name of the mGroup
+          operations:
+            read:
+              args:
+                Name: String
+              resolver: ManagementGroupReadResolver
+            create: true
+          nestedQueries:
+            HouseMembers: true
+        HouseMember:
+          fields: [ID, FirstName, Surname]
+          operations:
+            read: true
+            create: true
+          nestedQueries:
+            Payments: true
+        Payment:
+          fields: [ID, Sum, Created]
+          operations:
+            read:
+              args:
+                CategoryIDs: String
+                TypeIDs: String
+                StoreIDs: String
+              resolver: PaymentReadResolver
+            create: true
+          nestedQueries:
+            Categorys: true
+            Types: true
+            Stores: true
+            HouseMembers: true
+        Category:
+          fields: [ID, Title]
+          operations:
+            read: true
+            create: true
+        Type:
+          fields: [ID, Title]
+          operations:
+            read: true
+            create: true
+        Store:
+          fields: [ID, Title]
+          operations:
+            read: true
+            create: true
