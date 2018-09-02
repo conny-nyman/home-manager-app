@@ -7,6 +7,7 @@
  * Time: 19.06
  *
  * @property int $Sum
+ * @property string $DateOfPayment
  * @method \SilverStripe\ORM\ManyManyList|\Category[] Categorys()
  * @method \SilverStripe\ORM\ManyManyList|\Type[] Types()
  * @method \SilverStripe\ORM\ManyManyList|\Store[] Stores()
@@ -18,13 +19,15 @@ use SilverStripe\ORM\DataObject;
 class Payment extends DataObject
 {
     const SUM = 'Sum';
+    const DATE_OF_PAYMENT = 'DateOfPayment';
     const TYPES = Type::class . 's';
     const CATEGORYS = Category::class . 's';
     const STORES = Store::class . 's';
     const HOUSE_MEMBERS = HouseMember::class . 's';
 
     private static $db = [
-        self::SUM => DBConstants::INT
+        self::SUM => DBConstants::INT,
+        self::DATE_OF_PAYMENT => DBConstants::DATETIME
     ];
 
     private static $many_many = [

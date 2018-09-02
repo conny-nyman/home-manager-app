@@ -36,8 +36,14 @@
             </div>
         <% end_loop %>
     </div>
-    <div class="col-md-3 d-flex align-items-center">
-        <button type="button" class="btn btn-sm btn-primary" @click="savePayment">Save</button>
-        <button type="button" class="btn btn-sm btn-info" @click="getPayments">Update table</button>
+    <div class="col-md-3">
+        <div class="row">
+            <h3>Date of payment</h3>
+            <app-datepicker placeholder="Select date" format="dd/MM/yyyy" v-model="formData.dateOfPayment"></app-datepicker>
+        </div>
+        <div class="row my-4 d-flex align-items-center">
+            <button type="button" class="btn btn-sm btn-primary" @click="savePayment">Save</button>
+            <button type="button" class="btn btn-sm btn-info" @click="getPayments">Update table</button>
+        </div>
     </div>
 </div>

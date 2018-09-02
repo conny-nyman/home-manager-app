@@ -24,7 +24,7 @@ class PaymentReadResolver implements ResolverInterface
 
         // Default, filter only this month's payments.
         if (!isset($args['allMonths'])) {
-            $list = $list->filter('Created:GreaterThanOrEqual', date('01-m-Y'));
+            $list = $list->filter('DateOfPayment:GreaterThanOrEqual', date('01-m-Y'));
         }
 
         // TODO: Support filter by HouseMember

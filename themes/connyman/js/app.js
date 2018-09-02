@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import moment from 'moment'
+import Datepicker from 'vuejs-datepicker';
 
 Vue.filter('formatDate', value => {
     if (value) {
@@ -11,12 +12,16 @@ Vue.filter('formatDate', value => {
 
 let vm = new Vue({
     el: '#app',
+    components: {
+      appDatepicker: Datepicker
+    },
     data: {
         formData: {
             sum: 0,
             categoryIds: [],
             typeIds: [],
-            storeIds: []
+            storeIds: [],
+            dateOfPayment: ""
         },
         paymentOptions: {
             categoryTitle: '',

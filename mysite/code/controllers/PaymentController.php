@@ -146,6 +146,7 @@ class PaymentController extends Controller
         /** @var Payment $payment */
         $payment = Payment::create();
         $payment->Sum = $data->sum;
+        $payment->DateOfPayment = $data->dateOfPayment;
         self::addPaymentManyManyRelations($payment, $data);
 
         return $this->writePaymentToDB($payment);
