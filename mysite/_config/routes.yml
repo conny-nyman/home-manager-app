@@ -5,3 +5,5 @@ SilverStripe\Control\Director:
   rules:
     'payments//$Action': 'PaymentController'
     'paymentoptions//$Action': 'PaymentController'
+    'paymentendpoints//$Action': 'PaymentController'
+

@@ -1,56 +1,60 @@
-<div class="jumbotron text-center">
-    <h1>House manager dashboard</h1>
-    <p>Resize responsive page to see the effect!</p>
+<div class="jumbotron text-center bg-dark text-white">
+    <h1>House manager dashboard - $Group.Title</h1>
+    <p>Keep your shit together!</p>
 </div>
-<div class="container p-1">
-    <div class="row">
-        <div class="col-md-4 custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="add-category" v-model="extraFields.showCategoryField">
-            <label class="custom-control-label" for="add-category">Add new category</label>
-            <div class="row d-flex align-items-center" v-if="extraFields.showCategoryField">
-                <div class="col-md-6">
-                    <input type="text" class="form-control" v-model="paymentOptions.categoryTitle">
-                </div>
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-success" @click="addCategory">Add</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="add-type" v-model="extraFields.showTypesField">
-            <label class="custom-control-label" for="add-type">Add new type</label>
-            <div class="row d-flex align-items-center" v-if="extraFields.showTypesField">
-                <div class="col-md-6">
-                    <input type="text" class="form-control" v-model="paymentOptions.typeTitle">
-                </div>
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-success" @click="addType">Add</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="add-store" v-model="extraFields.showStoreField">
-            <label class="custom-control-label" for="add-store">Add new store</label>
-            <div class="row d-flex align-items-center" v-if="extraFields.showStoreField">
-                <div class="col-md-6">
-                    <input type="text" class="form-control" v-model="paymentOptions.storeTitle">
-                </div>
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-success" @click="addStore">Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container p-1">
+<div class="container p-3 bg-white rounded">
     <div class="row">
         <div class="col-md-12 text-center">
             <h1>Budget manager</h1>
             <hr>
         </div>
     </div>
+    <div class="row m-3">
+        <div class="col-md-4 custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="add-category" v-model="extraFields.showCategoryField">
+            <label class="custom-control-label" for="add-category">Add new category</label>
+            <transition name="fade">
+                <div class="row d-flex align-items-center" v-if="extraFields.showCategoryField">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Title" v-model="paymentOptions.categoryTitle">
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-outline-info waves-effect" @click="saveCategory">Add</button>
+                    </div>
+                </div>
+            </transition>
+        </div>
+        <div class="col-md-4 custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="add-type" v-model="extraFields.showTypesField">
+            <label class="custom-control-label" for="add-type">Add new type</label>
+            <transition name="fade">
+                <div class="row d-flex align-items-center" v-if="extraFields.showTypesField">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Title" v-model="paymentOptions.typeTitle">
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-outline-default waves-effect" @click="saveType">Add</button>
+                    </div>
+                </div>
+            </transition>
+        </div>
+        <div class="col-md-4 custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="add-store" v-model="extraFields.showStoreField">
+            <label class="custom-control-label" for="add-store">Add new store</label>
+            <transition name="fade">
+                <div class="row d-flex align-items-center" v-if="extraFields.showStoreField">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Title" v-model="paymentOptions.storeTitle">
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-outline-success waves-effect" @click="saveStore">Add</button>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-md-3 px-5">
+        <div class="col-md-3">
             <h3>Sum</h3>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -92,9 +96,9 @@
         </div>
     </div>
     <div class="row text-center">
-        <div class="col-sm-12">
+        <div class="col-sm-12 table-striped table-responsive-md">
             <hr>
-            <h3>Payments</h3>
+            <h3>Payments - $Now.Month</h3>
             <table class="table">
                 <thead>
                 <tr>
@@ -103,6 +107,7 @@
                     <th scope="col">Category</th>
                     <th scope="col">Type</th>
                     <th scope="col">Store</th>
+                    <th scope="col">Date</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -130,13 +135,15 @@
                             $Title<% if not $Last %>,<% end_if %>
                             <% if $Last %></td><% end_if %>
                         <% end_loop %>
+                        <td>$Created.Nice</td>
                     </tr>
                     <% end_loop %>
                 </tbody>
             </table>
         </div>
-        <div class="col-sm-12">
-            <h4>Total sums</h4>
+        <!-- Total sum tables -->
+        <div class="col-sm-12  table-striped table-responsive-md">
+            <h5>Total sums</h5>
             <table id="payment-table" class="table">
                 <thead>
                 <tr>
@@ -163,6 +170,102 @@
                     <% end_loop %>
                 </tbody>
             </table>
+        </div>
+        <!-- Total sum by category -->
+        <div class="col-sm-12  table-striped table-responsive-md">
+            <% loop $Users %>
+                <h5>$FirstName $Surname - Category</h5>
+                <table id="payment-table" class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Sum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <% loop $Categories %>
+                        <tr>
+                            <td>$Title</td>
+                            <td>
+                                <% loop $Payments.Filter('Categorys.Title', $Title).Filter('HouseMembers.FirstName', $Up.FirstName).sum(Sum) %>
+                                    <strong>
+                                        <% if $Me %>
+                                            $Me
+                                        <% else %>
+                                            0
+                                        <% end_if %>
+                                    </strong>
+                                <% end_loop %>
+                            </td>
+                        </tr>
+                        <% end_loop %>
+                    </tbody>
+                </table>
+            <% end_loop %>
+        </div>
+        <!-- Total sum by type -->
+        <div class="col-sm-12  table-striped table-responsive-md">
+            <% loop $Users %>
+                <h5>$FirstName $Surname - Type</h5>
+                <table id="payment-table" class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Types</th>
+                        <th scope="col">Sum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <% loop $Types %>
+                        <tr>
+                            <td>$Title</td>
+                            <td>
+                                <% loop $Payments.Filter('Types.Title', $Title).Filter('HouseMembers.FirstName', $Up.FirstName).sum(Sum) %>
+                                    <strong>
+                                        <% if $Me %>
+                                            $Me
+                                        <% else %>
+                                            0
+                                        <% end_if %>
+                                    </strong>
+                                <% end_loop %>
+                            </td>
+                        </tr>
+                        <% end_loop %>
+                    </tbody>
+                </table>
+            <% end_loop %>
+        </div>
+        <!-- Total sum by store -->
+        <div class="col-sm-12  table-striped table-responsive-md">
+            <% loop $Users %>
+                <h5>$FirstName $Surname - Store </h5>
+                <table id="payment-table" class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Stores</th>
+                        <th scope="col">Sum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <% loop $Stores %>
+                        <tr>
+                            <td>$Title</td>
+                            <td>
+                                <% loop $Payments.Filter('Stores.Title', $Title).Filter('HouseMembers.FirstName', $Up.FirstName).sum(Sum) %>
+                                    <strong>
+                                        <% if $Me %>
+                                            $Me
+                                        <% else %>
+                                            0
+                                        <% end_if %>
+                                    </strong>
+                                <% end_loop %>
+                            </td>
+                        </tr>
+                        <% end_loop %>
+                    </tbody>
+                </table>
+            <% end_loop %>
         </div>
     </div>
     <div class="row">

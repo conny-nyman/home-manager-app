@@ -11,6 +11,7 @@
 use SilverStripe\Control\Controller;
 use SilverStripe\Security\Security;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\SiteConfig\SiteConfig;
 
 class PaymentController extends Controller
 {
@@ -18,7 +19,8 @@ class PaymentController extends Controller
         'savePayment',
         'saveCategory',
         'saveType',
-        'saveStore'
+        'saveStore',
+        'getEndpoints'
     ];
 
     /**
@@ -50,25 +52,11 @@ class PaymentController extends Controller
      */
     public static function getPayments()
     {
-        if (!PermissionUtil::isMemberLoggedIn()) {
-            return false;
-        }
-
         if (PermissionUtil::isDefaultAdmin()) {
             return Payment::get();
         }
 
-        /** @var HouseMember $member */
-        $member = HouseMember::get()->byID(Security::getCurrentUser()->ID);
-        return $member->Payments();
-    }
-
-    /**
-     * @return \SilverStripe\ORM\DataList
-     */
-    public static function getUsers()
-    {
-        return HouseMember::get();
+        return Payment::get()->filter('HouseMembers.ManagementGroup.ID', PermissionUtil::getCurrentMemberGroup()->ID)->filter('Created:GreaterThanOrEqual', date('01-m-Y'));
     }
 
     public function saveCategory()
@@ -207,5 +195,16 @@ class PaymentController extends Controller
         } catch (Exception $e) {
             return $this->httpError(400, $e);
         }
+    }
+
+    public function getEndpoints()
+    {
+        $config = SiteConfig::current_site_config();
+        $endpoints['saveCategory'] = $config->SaveCategory;
+        $endpoints['saveType'] = $config->SaveType;
+        $endpoints['saveStore'] = $config->SaveStore;
+        $endpoints['savePayment'] = $config->SavePayment;
+
+        return json_encode($endpoints, JSON_UNESCAPED_SLASHES);
     }
 }

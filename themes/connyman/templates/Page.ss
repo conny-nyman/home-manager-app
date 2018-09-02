@@ -29,51 +29,51 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.9/js/mdb.min.js"></script>
 
-<%--<script>--%>
+    <%--<script>--%>
     <%--//bar--%>
     <%--var ctxB = document.getElementById("barChart").getContext('2d');--%>
 
     <%--var users = [];--%>
     <%--var userValues = [];--%>
     <%--$(document).ready(function () {--%>
-        <%--$("#payment-table tr td:nth-child(1)").each(function (i) {--%>
-            <%--users.push($(this).text());--%>
-        <%--});--%>
-
-        <%--$("#payment-table tr td:nth-child(2)").each(function (i) {--%>
-            <%--userValues.push($(this).text());--%>
-        <%--});--%>
-
-        <%--var myBarChart = new Chart(ctxB, {--%>
-            <%--type: 'bar',--%>
-            <%--data: {--%>
-                <%--labels: users,--%>
-                <%--datasets: [{--%>
-                    <%--label: 'euros',--%>
-                    <%--data: userValues,--%>
-                    <%--backgroundColor: [--%>
-                        <%--'rgba(255, 99, 132, 0.2)',--%>
-                        <%--'rgba(54, 162, 235, 0.2)'--%>
-                    <%--],--%>
-                    <%--borderColor: [--%>
-                        <%--'rgba(255,99,132,1)',--%>
-                        <%--'rgba(54, 162, 235, 1)'--%>
-                    <%--],--%>
-                    <%--borderWidth: 1--%>
-                <%--}]--%>
-            <%--},--%>
-            <%--options: {--%>
-                <%--scales: {--%>
-                    <%--yAxes: [{--%>
-                        <%--ticks: {--%>
-                            <%--beginAtZero: true--%>
-                        <%--}--%>
-                    <%--}]--%>
-                <%--}--%>
-            <%--}--%>
-        <%--});--%>
+    <%--$("#payment-table tr td:nth-child(1)").each(function (i) {--%>
+    <%--users.push($(this).text());--%>
     <%--});--%>
-<%--</script>--%>
+
+    <%--$("#payment-table tr td:nth-child(2)").each(function (i) {--%>
+    <%--userValues.push($(this).text());--%>
+    <%--});--%>
+
+    <%--var myBarChart = new Chart(ctxB, {--%>
+    <%--type: 'bar',--%>
+    <%--data: {--%>
+    <%--labels: users,--%>
+    <%--datasets: [{--%>
+    <%--label: 'euros',--%>
+    <%--data: userValues,--%>
+    <%--backgroundColor: [--%>
+    <%--'rgba(255, 99, 132, 0.2)',--%>
+    <%--'rgba(54, 162, 235, 0.2)'--%>
+    <%--],--%>
+    <%--borderColor: [--%>
+    <%--'rgba(255,99,132,1)',--%>
+    <%--'rgba(54, 162, 235, 1)'--%>
+    <%--],--%>
+    <%--borderWidth: 1--%>
+    <%--}]--%>
+    <%--},--%>
+    <%--options: {--%>
+    <%--scales: {--%>
+    <%--yAxes: [{--%>
+    <%--ticks: {--%>
+    <%--beginAtZero: true--%>
+    <%--}--%>
+    <%--}]--%>
+    <%--}--%>
+    <%--}--%>
+    <%--});--%>
+    <%--});--%>
+    <%--</script>--%>
 
 
 </body>

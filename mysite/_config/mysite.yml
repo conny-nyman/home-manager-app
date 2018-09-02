@@ -3,3 +3,7 @@ Name: myproject
 ---
 SilverStripe\Core\Manifest\ModuleManifest:
   project: mysite
+
+Silverstripe\SiteConfig\SiteConfig:
+  extensions:
+    - HouseManagerSiteConfig
