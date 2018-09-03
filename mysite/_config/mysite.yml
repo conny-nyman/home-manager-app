@@ -45,15 +45,18 @@ SilverStripe\GraphQL\Controller:
         Category:
           fields: [ID, Title]
           operations:
-            read: true
+            read:
+              paginate: false
             create: true
         Type:
           fields: [ID, Title]
           operations:
-            read: true
+            read:
+              paginate: false
             create: true
         Store:
           fields: [ID, Title]
           operations:
-            read: true
+            read:
+              paginate: false
             create: true

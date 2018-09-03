@@ -1,6 +1,20 @@
 <div class="row text-center">
     <div class="col-sm-12 table-striped table-responsive-md">
         <h3>Payments</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <app-multiselect class="mt-1" v-model="tableData.filter.selectedCategories" :options="paymentOptions.categories" label="Title" track-by="Title" :multiple="true"></app-multiselect>
+                <app-multiselect class="mt-1" v-model="tableData.filter.selectedTypes" :options="paymentOptions.types" label="Title" track-by="Title" :multiple="true"></app-multiselect>
+                <app-multiselect class="mt-1" v-model="tableData.filter.selectedStores" :options="paymentOptions.stores" label="Title" track-by="Title" :multiple="true"></app-multiselect>
+            </div>
+            <div class="col-md-4">
+                <app-datepicker placeholder="Select start date" format="dd/MM/yyyy" v-model="tableData.filter.startDate"></app-datepicker>
+                <app-datepicker class="mt-1" placeholder="Select end date" format="dd/MM/yyyy" v-model="tableData.filter.endDate"></app-datepicker>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-info" @click="getPayments">Update table</button>
+            </div>
+        </div>
         <table class="table">
             <thead>
             <tr>
@@ -38,3 +52,4 @@
         </table>
     </div>
 </div>
+
