@@ -33,7 +33,7 @@
     <div class="col-md-3">
         <div class="row">
             <h3>Date of payment</h3>
-            <app-datepicker placeholder="Select date" format="dd/MM/yyyy" v-model="formData.dateOfPayment"></app-datepicker>
+            <app-datepicker placeholder="Select date" format="dd/MM/yyyy" :bootstrap-styling="true" v-model="formData.dateOfPayment"></app-datepicker>
         </div>
         <div class="row my-4 d-flex align-items-center">
             <button type="button" class="btn btn-sm btn-primary" @click="savePayment">Save</button>

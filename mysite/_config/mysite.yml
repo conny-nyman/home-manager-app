@@ -28,13 +28,15 @@ SilverStripe\GraphQL\Controller:
           nestedQueries:
             Payments: true
         Payment:
-          fields: [ID, Sum, Created]
+          fields: [ID, Sum, DateOfPayment]
           operations:
             read:
               args:
                 CategoryIDs: String
                 TypeIDs: String
                 StoreIDs: String
+                StartDate: String
+                EndDate: String
               resolver: PaymentReadResolver
             create: true
           nestedQueries:

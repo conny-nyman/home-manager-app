@@ -16,4 +16,4 @@
 | GraphQL | Implemented
 | Require Auth | Implemented |
 | Split HTML to includes | Implemented |
-| Filter by StartDate and EndDate | Under construction
+| Filter by StartDate and EndDate | Implemented |

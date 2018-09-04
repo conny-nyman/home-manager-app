@@ -19,25 +19,43 @@ class PaymentReadResolver implements ResolverInterface
      */
     public function resolve($object, $args, $context, $info)
     {
+        // TODO: Support filter by HouseMember
+
         // Always filter this.
         $list = Payment::get()->filter('HouseMembers.ManagementGroup.ID', PermissionUtil::getCurrentMemberGroup()->ID);
-
-        // Default, filter only this month's payments.
-        if (!isset($args['allMonths'])) {
-            $list = $list->filter('DateOfPayment:GreaterThanOrEqual', date('01-m-Y'));
-        }
-
-        // TODO: Support filter by HouseMember
 
         $categoryIDS = self::strIDsToArray($args, 'CategoryIDs');
         $typeIDS = self::strIDsToArray($args, 'TypeIDs');
         $storeIDS = self::strIDsToArray($args, 'StoreIDs');
 
-        // Filter only if not null.
         $list = self::appendToFilterIfNotNull('Categorys.ID', $categoryIDS, $list);
         $list = self::appendToFilterIfNotNull('Types.ID', $typeIDS, $list);
         $list = self::appendToFilterIfNotNull('Stores.ID', $storeIDS, $list);
 
+        $list= self::addDateFilters($list, $args);
+
+        return $list;
+    }
+
+    /**
+     * @param $list
+     * @param $args
+     * @return mixed
+     */
+    private static function addDateFilters($list, $args)
+    {
+        if (isset($args['StartDate']) && isset($args['EndDate']) && !empty($args['StartDate']) && !empty($args['EndDate'])) {
+            $startDate = date("d-m-Y", strtotime($args['StartDate']));
+            $endDate = date("d-m-Y", strtotime($args['EndDate']));
+
+            $list = $list->filter([
+                'DateOfPayment:GreaterThanOrEqual' => $startDate,
+                'DateOfPayment:LessThanOrEqual' => $endDate
+            ]);
+        } else {
+            // Default, filter only this month's payments.
+            $list = $list->filter('DateOfPayment:GreaterThanOrEqual', date('01-m-Y'));
+        }
         return $list;
     }
 

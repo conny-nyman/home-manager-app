@@ -8,8 +8,8 @@
                 <app-multiselect class="mt-1" v-model="tableData.filter.selectedStores" :options="paymentOptions.stores" label="Title" track-by="Title" :multiple="true"></app-multiselect>
             </div>
             <div class="col-md-4">
-                <app-datepicker placeholder="Select start date" format="dd/MM/yyyy" v-model="tableData.filter.startDate"></app-datepicker>
-                <app-datepicker class="mt-1" placeholder="Select end date" format="dd/MM/yyyy" v-model="tableData.filter.endDate"></app-datepicker>
+                <app-datepicker placeholder="Select start date" format="dd/MM/yyyy" :bootstrap-styling="true" v-model="tableData.filter.startDate"></app-datepicker>
+                <app-datepicker class="mt-1" placeholder="Select end date" format="dd/MM/yyyy" :bootstrap-styling="true" v-model="tableData.filter.endDate"></app-datepicker>
             </div>
             <div class="col-md-4">
                 <button type="button" class="btn btn-info" @click="getPayments">Update table</button>
@@ -27,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="payment in tableData.payments.edges">
+            <tr v-for="payment in sortedPayments">
                 <td>{{ payment.node.HouseMembers.edges[0].node.FirstName }} {{ payment.node.HouseMembers.edges[0].node.Surname }}</td>
                 <td>{{ payment.node.Sum }}</td>
                 <td>
@@ -45,7 +45,7 @@
                         {{ store.node.Title }}
                     </template>
                 </td>
-                <td>{{ payment.node.Created | formatDate }}</td>
+                <td>{{ payment.node.DateOfPayment | formatDate }}</td>
             </tr>
             <!-- end -->
             </tbody>

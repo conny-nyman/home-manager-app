@@ -80,6 +80,18 @@ new Vue({
         this.getStores();
         this.getPayments();
     },
+    computed: {
+        sortedPayments: function () {
+            if (this.tableData.payments.edges) {
+                this.tableData.payments.edges.sort((a, b) => {
+                    return new Date(b.node.DateOfPayment) - new Date(a.node.DateOfPayment);
+                });
+                return this.tableData.payments.edges;
+            } else {
+                return []
+            }
+        }
+    },
     methods: {
         getCategories() {
             axios({
@@ -142,12 +154,18 @@ new Vue({
                 data: {
                     query: `
                     {
-                      readPayments(CategoryIDs: "${this.tableData.filter.selectedCategories.map(a => a.ID).join(" ")}" TypeIDs: "${this.tableData.filter.selectedTypes.map(a => a.ID).join(" ")}" StoreIDs: "${this.tableData.filter.selectedStores.map(a => a.ID).join(" ")}") {
+                      readPayments(
+                      CategoryIDs: "${this.tableData.filter.selectedCategories.map(a => a.ID).join(" ")}" 
+                      TypeIDs: "${this.tableData.filter.selectedTypes.map(a => a.ID).join(" ")}" 
+                      StoreIDs: "${this.tableData.filter.selectedStores.map(a => a.ID).join(" ")}"
+                      StartDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.startDate).format('YYYY-MM-DD') : ''}"
+                      EndDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.endDate).format('YYYY-MM-DD') : ''}"
+                      ) {
                         edges {
                           node {
                             ID
                             Sum
-                            Created
+                            DateOfPayment
                             HouseMembers {
                               edges {
                                 node {
@@ -228,6 +246,7 @@ new Vue({
             });
         },
         savePayment() {
+            this.formData.dateOfPayment ? moment(this.formData.dateOfPayment).format('YYYY-MM-DD') : '';
             axios.post('payments/savePayment',
                 JSON.stringify(this.formData),
                 {
@@ -235,7 +254,7 @@ new Vue({
                         'Content-type': 'application/json',
                     }
                 })
-                .then(response => console.log(response))
+                .then(() => this.getPayments())
                 .catch(error => {
                     console.log(error)
                 });
