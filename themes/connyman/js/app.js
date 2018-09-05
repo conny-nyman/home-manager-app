@@ -6,7 +6,18 @@ import moment from 'moment'
 // Components
 import Datepicker from 'vuejs-datepicker';
 import Loading from 'vue-full-loading';
-import Multiselect from 'vue-multiselect'
+import Multiselect from 'vue-multiselect';
+import VueCurrencyFilter from 'vue-currency-filter';
+
+Vue.use(VueCurrencyFilter,
+    {
+        symbol : '€',
+        thousandsSeparator: '.',
+        fractionCount: 2,
+        fractionSeparator: ',',
+        symbolPosition: 'back',
+        symbolSpacing: true
+    });
 
 Vue.filter('formatDate', value => {
     if (value) {
@@ -84,7 +95,13 @@ new Vue({
         this.getHouseMembers();
     },
     computed: {
-        sortedPayments: function () {
+        paymentSum() {
+            if (this.tableData.payments.edges) {
+                return this.tableData.payments.edges.map(item => item.node.Sum).reduce((prev, next) => prev + next);
+            }
+            return '';
+        },
+        sortedPayments() {
             if (this.tableData.payments.edges) {
                 this.tableData.payments.edges.sort((a, b) => {
                     return new Date(b.node.DateOfPayment) - new Date(a.node.DateOfPayment);
