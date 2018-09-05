@@ -15,9 +15,9 @@
                                  :multiple="true"></app-multiselect>
             </div>
             <div class="col-md-2">
-                <app-datepicker placeholder="Select start date" format="dd/MM/yyyy" :bootstrap-styling="true"
+                <app-datepicker placeholder="Select start date" format="dd/MM/yyyy" clear-button="true" :bootstrap-styling="true"
                                 v-model="tableData.filter.startDate"></app-datepicker>
-                <app-datepicker class="mt-1" placeholder="Select end date" format="dd/MM/yyyy" :bootstrap-styling="true"
+                <app-datepicker class="mt-1" placeholder="Select end date" format="dd/MM/yyyy" clear-button="true" :bootstrap-styling="true"
                                 v-model="tableData.filter.endDate"></app-datepicker>
             </div>
             <div class="col-md-2 d-flex align-items-center">
