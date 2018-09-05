@@ -52,7 +52,10 @@ new Vue({
         extraFields: {
             showCategoryField: false,
             showTypeField: false,
-            showStoreField: false
+            showStoreField: false,
+            showAddPaymentOptions: false,
+            showAddPayments: false,
+            showPaymentTable: true
         },
         tableData: {
             filter: {
@@ -65,7 +68,6 @@ new Vue({
             },
             payments: {}
         },
-        showTotalSumTables: false,
         loadingSpinner: {
             show: false,
             label: 'GraphQL is awesome ¯\\_(ツ)_/¯'

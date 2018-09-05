@@ -3,21 +3,15 @@
     <p>Keep your shit together!</p>
 </div>
 <div class="container p-3 bg-white rounded">
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h1>Budget manager</h1>
-            <hr>
-        </div>
-    </div>
-    <% include AddPaymentOptions %>
-    <% include AddPayment %>
-    <% include DynamicPaymentTable %>
-    <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="showTotalSumTables" v-model="showTotalSumTables">
-        <label class="custom-control-label" for="showTotalSumTables">Show all tables</label>
-    </div>
-    <template v-if="showTotalSumTables">
-        <% include TotalSumTables %>
+    <% include Header %>
+    <template v-if="extraFields.showAddPaymentOptions">
+        <% include AddPaymentOptions %>
+    </template>
+    <template v-if="extraFields.showAddPayments">
+        <% include AddPayment %>
+    </template>
+    <template v-if="extraFields.showPaymentTable">
+        <% include DynamicPaymentTable %>
     </template>
     <div class="row">
         <div class="col-sm-12">
