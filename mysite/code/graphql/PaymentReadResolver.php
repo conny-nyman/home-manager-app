@@ -19,15 +19,15 @@ class PaymentReadResolver implements ResolverInterface
      */
     public function resolve($object, $args, $context, $info)
     {
-        // TODO: Support filter by HouseMember
-
         // Always filter this.
         $list = Payment::get()->filter('HouseMembers.ManagementGroup.ID', PermissionUtil::getCurrentMemberGroup()->ID);
 
+        $houseMemberIDS = self::strIDsToArray($args, 'HouseMemberIDs');
         $categoryIDS = self::strIDsToArray($args, 'CategoryIDs');
         $typeIDS = self::strIDsToArray($args, 'TypeIDs');
         $storeIDS = self::strIDsToArray($args, 'StoreIDs');
 
+        $list = self::appendToFilterIfNotNull('HouseMembers.ID', $houseMemberIDS, $list);
         $list = self::appendToFilterIfNotNull('Categorys.ID', $categoryIDS, $list);
         $list = self::appendToFilterIfNotNull('Types.ID', $typeIDS, $list);
         $list = self::appendToFilterIfNotNull('Stores.ID', $storeIDS, $list);

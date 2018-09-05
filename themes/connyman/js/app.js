@@ -30,6 +30,7 @@ new Vue({
             dateOfPayment: ''
         },
         paymentOptions: {
+            houseMembers: [],
             categories: [],
             types: [],
             stores: [],
@@ -44,9 +45,10 @@ new Vue({
         },
         tableData: {
             filter: {
-                selectedCategories: [],
-                selectedTypes: [],
-                selectedStores: [],
+                houseMembers: [],
+                categories: [],
+                types: [],
+                stores: [],
                 startDate: '',
                 endDate: ''
             },
@@ -79,6 +81,7 @@ new Vue({
         this.getTypes();
         this.getStores();
         this.getPayments();
+        this.getHouseMembers();
     },
     computed: {
         sortedPayments: function () {
@@ -155,9 +158,10 @@ new Vue({
                     query: `
                     {
                       readPayments(
-                      CategoryIDs: "${this.tableData.filter.selectedCategories.map(a => a.ID).join(" ")}" 
-                      TypeIDs: "${this.tableData.filter.selectedTypes.map(a => a.ID).join(" ")}" 
-                      StoreIDs: "${this.tableData.filter.selectedStores.map(a => a.ID).join(" ")}"
+                      HouseMemberIDs: "${this.tableData.filter.houseMembers.map(a => a.ID).join(" ")}" 
+                      CategoryIDs: "${this.tableData.filter.categories.map(a => a.ID).join(" ")}" 
+                      TypeIDs: "${this.tableData.filter.types.map(a => a.ID).join(" ")}" 
+                      StoreIDs: "${this.tableData.filter.stores.map(a => a.ID).join(" ")}"
                       StartDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.startDate).format('YYYY-MM-DD') : ''}"
                       EndDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.endDate).format('YYYY-MM-DD') : ''}"
                       ) {
@@ -207,6 +211,25 @@ new Vue({
                 }
             }).then(response => {
                 this.tableData.payments = response.data.data.readPayments;
+            });
+        },
+        getHouseMembers() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    {
+                      readHouseMembers {
+                        ID
+                        FirstName
+                        Surname
+                      }
+                    }
+                  `
+                }
+            }).then(response => {
+                this.paymentOptions.houseMembers = response.data.data.readHouseMembers;
             });
         },
         saveCategory() {

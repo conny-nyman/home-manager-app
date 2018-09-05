@@ -23,7 +23,9 @@ SilverStripe\GraphQL\Controller:
         HouseMember:
           fields: [ID, FirstName, Surname]
           operations:
-            read: true
+            read:
+              paginate: false
+              resolver: HouseMemberReadResolver
             create: true
           nestedQueries:
             Payments: true
@@ -32,6 +34,7 @@ SilverStripe\GraphQL\Controller:
           operations:
             read:
               args:
+                HouseMemberIDs: String
                 CategoryIDs: String
                 TypeIDs: String
                 StoreIDs: String
