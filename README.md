@@ -7,7 +7,7 @@
 | Reminder list | Not implemented |
 | Loan list| Not implemented |
 
-| Features| Status|
+| Todo| Status|
 | ------ | ------ |
 | Dynamic frontend (Vue)| Under construction|
 | Replace DashboardController with PaymentController | Implemented |
@@ -17,3 +17,4 @@
 | Require Auth | Implemented |
 | Split HTML to includes | Implemented |
 | Filter by StartDate and EndDate | Implemented |
+| Styling | Under construction |
