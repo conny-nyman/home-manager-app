@@ -22,6 +22,7 @@
     "vue-currency-filter": "^2.2.6",
     "vue-full-loading": "^1.2.1",
     "vue-multiselect": "^2.1.0",
+    "vue-snotify": "^3.2.1",
     "vuejs-datepicker": "^1.5.3"
   }
 }

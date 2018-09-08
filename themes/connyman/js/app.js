@@ -6,8 +6,11 @@ import moment from 'moment'
 // Components
 import Datepicker from 'vuejs-datepicker';
 import Loading from 'vue-full-loading';
-import Multiselect from 'vue-multiselect';
 import VueCurrencyFilter from 'vue-currency-filter';
+import Multiselect from 'vue-multiselect';
+import "vue-multiselect/dist/vue-multiselect.min.css";
+import Snotify from 'vue-snotify';
+import 'vue-snotify/styles/material.css';
 
 Vue.use(VueCurrencyFilter,
     {
@@ -18,6 +21,8 @@ Vue.use(VueCurrencyFilter,
         symbolPosition: 'back',
         symbolSpacing: true
     });
+
+Vue.use(Snotify);
 
 Vue.filter('formatDate', value => {
     if (value) {
@@ -33,7 +38,6 @@ new Vue({
         appMultiselect: Multiselect
     },
     data: {
-        formErrorMsg: '',
         formData: {
             sum: 0,
             categoryIds: [],
@@ -342,12 +346,13 @@ new Vue({
             }).then((response) => {
                 this.getPayments();
                 if (response.data.errors) {
-                    this.formErrorMsg = response.data.errors[0].message;
+                    this.$snotify.error(response.data.errors[0].message);
+                } else {
+                    this.$snotify.success('Payment saved');
                 }
-            })
-                .catch(error => {
-                    console.log(error)
-                });
+            }).catch(error => {
+                console.log(error)
+            });
         }
     }
 });
