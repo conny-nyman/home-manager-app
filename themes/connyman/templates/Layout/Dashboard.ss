@@ -1,5 +1,5 @@
 <div class="jumbotron text-center bg-dark text-white">
-    <h1>House manager dashboard - $Group.Title</h1>
+    <h1>House manager dashboard - {{ paymentOptions.managementGroup.Name }}</h1>
     <p>Keep your shit together!</p>
 </div>
 <div class="container p-3 bg-white rounded">

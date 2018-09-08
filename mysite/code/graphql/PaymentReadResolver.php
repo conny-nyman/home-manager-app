@@ -22,13 +22,13 @@ class PaymentReadResolver implements ResolverInterface
         // Always filter this.
         $list = Payment::get()->filter('HouseMembers.ManagementGroup.ID', PermissionUtil::getCurrentMemberGroup()->ID);
 
-        $houseMemberIDS = self::strIDsToArray($args, 'HouseMemberIDs');
-        $categoryIDS = self::strIDsToArray($args, 'CategoryIDs');
-        $typeIDS = self::strIDsToArray($args, 'TypeIDs');
-        $storeIDS = self::strIDsToArray($args, 'StoreIDs');
+        $houseMemberIDS = GraphqlResolverUtil::strIDsToArray($args, 'HouseMemberIDs');
+        $categoryIDS = GraphqlResolverUtil::strIDsToArray($args, 'CategoryIDs');
+        $typeIDS = GraphqlResolverUtil::strIDsToArray($args, 'TypeIDs');
+        $storeIDS = GraphqlResolverUtil::strIDsToArray($args, 'StoreIDs');
 
         $list = self::appendToFilterIfNotNull('HouseMembers.ID', $houseMemberIDS, $list);
-        $list = self::appendToFilterIfNotNull('Categorys.ID', $categoryIDS, $list);
+        $list = self::appendToFilterIfNotNull('Categories.ID', $categoryIDS, $list);
         $list = self::appendToFilterIfNotNull('Types.ID', $typeIDS, $list);
         $list = self::appendToFilterIfNotNull('Stores.ID', $storeIDS, $list);
 
@@ -57,19 +57,6 @@ class PaymentReadResolver implements ResolverInterface
             $list = $list->filter('DateOfPayment:GreaterThanOrEqual', date('01-m-Y'));
         }
         return $list;
-    }
-
-    /**
-     * @param $args
-     * @param string $key
-     * @return array
-     */
-    private static function strIDsToArray($args, $key)
-    {
-        if (isset($args[$key]) && !empty($args[$key])) {
-            return explode(" ", $args[$key]);
-        }
-        return [];
     }
 
     /**

@@ -42,24 +42,24 @@
             </thead>
             <tbody>
             <tr v-for="payment in sortedPayments">
-                <td>{{ payment.node.HouseMembers.edges[0].node.FirstName }} {{ payment.node.HouseMembers.edges[0].node.Surname }}</td>
-                <td>{{ payment.node.Sum }}</td>
+                <td>{{ payment.HouseMembers[0].FirstName }} {{ payment.HouseMembers[0].Surname }}</td>
+                <td>{{ payment.Sum }}</td>
                 <td>
-                    <template v-for="category in payment.node.Categorys.edges">
-                        {{ category.node.Title }}
+                    <template v-for="category in payment.Categories">
+                        {{ category.Title }}
                     </template>
                 </td>
                 <td>
-                    <template v-for="type in payment.node.Types.edges">
-                        {{ type.node.Title }}
+                    <template v-for="type in payment.Types">
+                        {{ type.Title }}
                     </template>
                 </td>
                 <td>
-                    <template v-for="store in payment.node.Stores.edges">
-                        {{ store.node.Title }}
+                    <template v-for="store in payment.Stores">
+                        {{ store.Title }}
                     </template>
                 </td>
-                <td>{{ payment.node.DateOfPayment | formatDate }}</td>
+                <td>{{ payment.DateOfPayment | formatDate }}</td>
             </tr>
             <!-- end -->
             </tbody>

@@ -27,28 +27,4 @@ class HouseMember extends Member
     private static $many_many = [
         self::PAYMENTS => Payment::class
     ];
-
-    /**
-     * @return \SilverStripe\ORM\DataList
-     */
-    public function getCategories()
-    {
-        return PaymentController::getCategories();
-    }
-
-    /**
-     * @return \SilverStripe\ORM\DataList
-     */
-    public function getTypes()
-    {
-        return PaymentController::getTypes();
-    }
-
-    /**
-     * @return \SilverStripe\ORM\DataList
-     */
-    public function getStores()
-    {
-        return PaymentController::getStores();
-    }
 }

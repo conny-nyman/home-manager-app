@@ -18,3 +18,9 @@
 | Split HTML to includes | Implemented |
 | Filter by StartDate and EndDate | Implemented |
 | Styling | Under construction |
+
+Change timezone on server
+```
+[Date]
+date.timezone ="Europe/Helsinki"
+```

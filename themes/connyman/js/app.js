@@ -11,7 +11,7 @@ import VueCurrencyFilter from 'vue-currency-filter';
 
 Vue.use(VueCurrencyFilter,
     {
-        symbol : '€',
+        symbol: '€',
         thousandsSeparator: '.',
         fractionCount: 2,
         fractionSeparator: ',',
@@ -33,14 +33,16 @@ new Vue({
         appMultiselect: Multiselect
     },
     data: {
+        formErrorMsg: '',
         formData: {
             sum: 0,
             categoryIds: [],
             typeIds: [],
             storeIds: [],
-            dateOfPayment: ''
+            dateOfPayment: moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
         },
         paymentOptions: {
+            managementGroup: {},
             houseMembers: [],
             categories: [],
             types: [],
@@ -90,6 +92,7 @@ new Vue({
             return Promise.reject(error);
         });
         // TODO: Use apollo for graphql. (this is for testing)
+        this.getManagementGroup();
         this.getCategories();
         this.getTypes();
         this.getStores();
@@ -98,17 +101,17 @@ new Vue({
     },
     computed: {
         paymentSum() {
-            if (this.tableData.payments.edges) {
-                return this.tableData.payments.edges.map(item => item.node.Sum).reduce((prev, next) => prev + next);
+            if (Array.isArray(this.tableData.payments)) {
+                return this.tableData.payments.map(item => item.Sum).reduce((prev, next) => prev + next);
             }
             return '';
         },
         sortedPayments() {
-            if (this.tableData.payments.edges) {
-                this.tableData.payments.edges.sort((a, b) => {
-                    return new Date(b.node.DateOfPayment) - new Date(a.node.DateOfPayment);
+            if (Array.isArray(this.tableData.payments)) {
+                this.tableData.payments.sort((a, b) => {
+                    return new Date(b.DateOfPayment) - new Date(a.DateOfPayment);
                 });
-                return this.tableData.payments.edges;
+                return this.tableData.payments;
             } else {
                 return []
             }
@@ -184,45 +187,25 @@ new Vue({
                       StartDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.startDate).format('YYYY-MM-DD') : ''}"
                       EndDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.endDate).format('YYYY-MM-DD') : ''}"
                       ) {
-                        edges {
-                          node {
-                            ID
-                            Sum
-                            DateOfPayment
-                            HouseMembers {
-                              edges {
-                                node {
-                                  ID
-                                  FirstName
-                                  Surname
-                                }
-                              }
-                            }
-                            Categorys {
-                              edges {
-                                node {
-                                  ID
-                                  Title
-                                }
-                              }
-                            }
-                            Types {
-                              edges {
-                                node {
-                                  ID
-                                  Title
-                                }
-                              }
-                            }
-                            Stores {
-                              edges {
-                                node {
-                                  ID
-                                  Title
-                                }
-                              }
-                            }
-                          }
+                        ID
+                        Sum
+                        DateOfPayment
+                        HouseMembers {
+                              ID
+                              FirstName
+                              Surname
+                        }
+                        Categories {
+                              ID
+                              Title
+                        }
+                        Types {
+                              ID
+                              Title
+                        }
+                        Stores {
+                              ID
+                              Title
                         }
                       }
                     }
@@ -251,52 +234,117 @@ new Vue({
                 this.paymentOptions.houseMembers = response.data.data.readHouseMembers;
             });
         },
-        saveCategory() {
-            axios.post('paymentoptions/saveCategory',
-                JSON.stringify(this.paymentOptions.categoryTitle),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+        getManagementGroup() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    {
+                      readManagementGroups {
+                        ID,
+                        Name
+                      }
                     }
-                }).then(() => {
+                  `
+                }
+            }).then(response => {
+                this.paymentOptions.managementGroup = response.data.data.readManagementGroups[0];
+            });
+        },
+        saveCategory() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createCategory(Input: {Title: "${this.paymentOptions.categoryTitle}"}) {
+                        ID
+                        Title
+                      }
+                    }
+                  `
+                }
+            }).then(() => {
                 this.paymentOptions.categoryTitle = '';
                 this.getCategories();
             });
         },
         saveType() {
-            axios.post('paymentoptions/saveType',
-                JSON.stringify(this.paymentOptions.typeTitle),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createType(Input: {Title: "${this.paymentOptions.typeTitle}"}) {
+                        ID
+                        Title
+                      }
                     }
-                }).then(() => {
+                  `
+                }
+            }).then(() => {
                 this.paymentOptions.typeTitle = '';
                 this.getTypes();
             });
         },
         saveStore() {
-            axios.post('paymentoptions/saveStore',
-                JSON.stringify(this.paymentOptions.storeTitle),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createStore(Input: {Title: "${this.paymentOptions.storeTitle}"}) {
+                        ID
+                        Title
+                      }
                     }
-                }).then(() => {
+                  `
+                }
+            }).then(() => {
                 this.paymentOptions.storeTitle = '';
                 this.getStores();
             });
         },
         savePayment() {
-            this.formData.dateOfPayment ? moment(this.formData.dateOfPayment).format('YYYY-MM-DD') : '';
-            axios.post('payments/savePayment',
-                JSON.stringify(this.formData),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createPayment(
+                      Input: {Sum: ${this.formData.sum}, DateOfPayment: "${this.formData.dateOfPayment ? moment(this.formData.dateOfPayment).format('YYYY-MM-DD HH:mm:ss') : ''}"}, 
+                      CategoryIDs: "${this.formData.categoryIds.join(" ")}", 
+                      TypeIDs: "${this.formData.typeIds.join(" ")}", 
+                      StoreIDs: "${this.formData.storeIds.join(" ")}") {
+                        ID
+                        Sum
+                        Categories {
+                          ID
+                          Title
+                        }
+                        Types {
+                          ID
+                          Title
+                        }
+                        Stores {
+                          ID
+                          Title
+                        }
+                      }
                     }
-                })
-                .then(() => this.getPayments())
+                  `
+                }
+            }).then((response) => {
+                this.getPayments();
+                if (response.data.errors) {
+                    this.formErrorMsg = response.data.errors[0].message;
+                }
+            })
                 .catch(error => {
                     console.log(error)
                 });

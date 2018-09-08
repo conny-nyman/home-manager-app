@@ -37,6 +37,7 @@
         </div>
         <div class="row my-4 d-flex align-items-center">
             <button type="button" class="btn btn-sm btn-primary" @click="savePayment">Save</button>
+            <!-- Add vue toaster here! -->
         </div>
     </div>
 </div>
