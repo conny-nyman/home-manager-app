@@ -36,7 +36,7 @@ class Type extends DataObject
             $result->addError('Title cannot be empty');
         }
 
-        if (Store::get()->filter('Title', $this->Title)->exists()) {
+        if (Type::get()->filter('Title', $this->Title)->exists()) {
             $result->addError('A Type already exist with Title: ' . $this->Title);
         }
 

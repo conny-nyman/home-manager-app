@@ -26,7 +26,7 @@ Vue.use(Snotify);
 
 Vue.filter('formatDate', value => {
     if (value) {
-        return moment(String(value)).format('DD/MM/YYYY hh:mm')
+        return moment(String(value)).format('DD/MM/YYYY HH:mm')
     }
 });
 
@@ -69,8 +69,8 @@ new Vue({
                 categories: [],
                 types: [],
                 stores: [],
-                startDate: '',
-                endDate: ''
+                startDate: moment().startOf('month').format('YYYY-MM-DD'),
+                endDate: moment().endOf('month').format('YYYY-MM-DD')
             },
             payments: {}
         },
@@ -122,6 +122,14 @@ new Vue({
         }
     },
     methods: {
+        validateResponse(response, name) {
+            if (response.data.errors) {
+                this.$snotify.error(response.data.errors[0].message);
+                return false;
+            }
+            this.$snotify.success(`${name} saved`);
+            return true;
+        },
         getCategories() {
             axios({
                 url: 'graphql',
@@ -270,9 +278,11 @@ new Vue({
                     }
                   `
                 }
-            }).then(() => {
-                this.paymentOptions.categoryTitle = '';
-                this.getCategories();
+            }).then((response) => {
+                if (this.validateResponse(response, 'Category')) {
+                    this.paymentOptions.categoryTitle = '';
+                    this.getCategories();
+                }
             });
         },
         saveType() {
@@ -289,9 +299,11 @@ new Vue({
                     }
                   `
                 }
-            }).then(() => {
-                this.paymentOptions.typeTitle = '';
-                this.getTypes();
+            }).then((response) => {
+                if (this.validateResponse(response, 'Type')) {
+                    this.paymentOptions.typeTitle = '';
+                    this.getTypes();
+                }
             });
         },
         saveStore() {
@@ -308,9 +320,11 @@ new Vue({
                     }
                   `
                 }
-            }).then(() => {
-                this.paymentOptions.storeTitle = '';
-                this.getStores();
+            }).then((response) => {
+                if (this.validateResponse(response, 'Store')) {
+                    this.paymentOptions.storeTitle = '';
+                    this.getStores();
+                }
             });
         },
         savePayment() {
@@ -344,14 +358,9 @@ new Vue({
                   `
                 }
             }).then((response) => {
-                this.getPayments();
-                if (response.data.errors) {
-                    this.$snotify.error(response.data.errors[0].message);
-                } else {
-                    this.$snotify.success('Payment saved');
+                if (this.validateResponse(response, 'Payment')) {
+                    this.getPayments();
                 }
-            }).catch(error => {
-                console.log(error)
             });
         }
     }

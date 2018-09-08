@@ -32,7 +32,7 @@ class PaymentReadResolver implements ResolverInterface
         $list = self::appendToFilterIfNotNull('Types.ID', $typeIDS, $list);
         $list = self::appendToFilterIfNotNull('Stores.ID', $storeIDS, $list);
 
-        $list= self::addDateFilters($list, $args);
+        $list = self::addDateFilters($list, $args);
 
         return $list;
     }
@@ -44,17 +44,13 @@ class PaymentReadResolver implements ResolverInterface
      */
     private static function addDateFilters($list, $args)
     {
-        if (isset($args['StartDate']) && isset($args['EndDate']) && !empty($args['StartDate']) && !empty($args['EndDate'])) {
+        if (isset($args['StartDate']) && !empty($args['StartDate'])) {
             $startDate = date("d-m-Y", strtotime($args['StartDate']));
+            $list = $list->filter('DateOfPayment:GreaterThanOrEqual', $startDate);
+        }
+        if (isset($args['EndDate']) && !empty($args['EndDate'])) {
             $endDate = date("d-m-Y", strtotime($args['EndDate']));
-
-            $list = $list->filter([
-                'DateOfPayment:GreaterThanOrEqual' => $startDate,
-                'DateOfPayment:LessThanOrEqual' => $endDate
-            ]);
-        } else {
-            // Default, filter only this month's payments.
-            $list = $list->filter('DateOfPayment:GreaterThanOrEqual', date('01-m-Y'));
+            $list = $list->filter('DateOfPayment:LessThanOrEqual', $endDate);
         }
         return $list;
     }
