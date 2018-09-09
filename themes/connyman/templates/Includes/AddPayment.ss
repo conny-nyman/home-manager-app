@@ -15,14 +15,16 @@
         <app-multiselect class="mt-1" v-model="formData.typeIds" :searchable="false" placeholder="Select type" :options="paymentOptions.types" label="Title" track-by="ID" :multiple="true"></app-multiselect>
         <app-multiselect class="mt-1" v-model="formData.storeIds" :searchable="false" placeholder="Select store" :options="paymentOptions.stores" label="Title" track-by="ID" :multiple="true"></app-multiselect>
     </div>
-    <div class="col-md-3">
-        <div class="row">
-            <h3>Date of payment</h3>
-            <app-datepicker class="text-dark" placeholder="Select date" format="dd/MM/yyyy" :clear-button="true" :bootstrap-styling="true" v-model="formData.dateOfPayment"></app-datepicker>
-        </div>
-        <div class="row my-4 d-flex align-items-center">
+    <div class="col-md-4">
+        <h3 class="mt-3 mt-md-0">Date of payment</h3>
+        <app-datepicker class="text-dark" placeholder="Select date" format="dd/MM/yyyy" :clear-button="true" :bootstrap-styling="true" v-model="formData.dateOfPayment"></app-datepicker>
+        <div class="my-4 d-flex align-items-center">
             <button type="button" class="btn btn-sm btn-outline-info" @click="savePayment">Save</button>
         </div>
     </div>
 </div>
-<hr :class="{'bg-white' : darkMode}">
+<div class="row">
+    <div class="col-md-12 px-0">
+        <hr :class="{'bg-white' : darkMode}">
+    </div>
+</div>

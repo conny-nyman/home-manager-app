@@ -1,7 +1,7 @@
-<div class="row text-center">
-    <div class="col-md-12 px-0">
-        <h3>Welcome {{ paymentOptions.managementGroup.Name }}!</h3>
-        <p>{{ paymentOptions.managementGroup.Text }}</p>
+<div class="row text-md-center">
+    <div v-if="paymentOptions.managementGroup.Name" class="col-md-12 px-0">
+        <h3 class="text-center">Welcome {{ paymentOptions.managementGroup.Name }}!</h3>
+        <p class="text-center">{{ paymentOptions.managementGroup.Text }}</p>
         <hr :class="{'bg-white' : darkMode}">
     </div>
     <div class="col-md-3">
