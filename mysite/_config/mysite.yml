@@ -9,17 +9,17 @@ SilverStripe\GraphQL\Controller:
     scaffolding:
       types:
         ManagementGroup:
-          fields:
-            ID: The unique identifier of the mGroup
-            Name: The name of the mGroup
+          fields: [ID, Name, Text]
           operations:
             read:
               args:
                 Name: String
               resolver: ManagementGroupReadResolver
+              paginate: false
             create: true
           nestedQueries:
-            HouseMembers: true
+            HouseMembers:
+              paginate: false
         HouseMember:
           fields: [ID, FirstName, Surname]
           operations:
@@ -41,12 +41,25 @@ SilverStripe\GraphQL\Controller:
                 StartDate: String
                 EndDate: String
               resolver: PaymentReadResolver
-            create: true
+              paginate: false
+            create:
+              args:
+                HouseMemberIDs: String
+                CategoryIDs: String
+                TypeIDs: String
+                StoreIDs: String
+                StartDate: String
+                EndDate: String
+              resolver: PaymentCreateResolver
           nestedQueries:
-            Categorys: true
-            Types: true
-            Stores: true
-            HouseMembers: true
+            Categories:
+              paginate: false
+            Types:
+              paginate: false
+            Stores:
+              paginate: false
+            HouseMembers:
+              paginate: false
         Category:
           fields: [ID, Title]
           operations:
@@ -65,3 +78,10 @@ SilverStripe\GraphQL\Controller:
             read:
               paginate: false
             create: true
+        Slide:
+          fields: [ID, Text, Image, TextWhite]
+          operations:
+            read:
+              paginate: false
+        SilverStripe\Assets\Image:
+          fields: [ID, File]

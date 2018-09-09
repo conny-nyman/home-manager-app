@@ -36,7 +36,7 @@ class Category extends DataObject
             $result->addError('Title cannot be empty');
         }
 
-        if (Store::get()->filter('Title', $this->Title)->exists()) {
+        if (Category::get()->filter('Title', $this->Title)->exists()) {
             $result->addError('A Category already exist with Title: ' . $this->Title);
         }
 

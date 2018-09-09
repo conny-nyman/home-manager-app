@@ -21,11 +21,6 @@ class ManagementGroupReadResolver implements ResolverInterface
     {
         // TODO: skip limitations for default admins..
         $list = ManagementGroup::get()->filter('ID', PermissionUtil::getCurrentMemberGroup()->ID);
-//        if (isset($args['Name'])) {
-//            $list = $list->filter([
-//                'Name:PartialMatch' => $args['Name']
-//            ]);
-//        }
         return $list;
     }
 }

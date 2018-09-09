@@ -6,9 +6,9 @@
  * Date: 20/08/2018
  * Time: 19.06
  *
- * @property int $Sum
+ * @property float $Sum
  * @property string $DateOfPayment
- * @method \SilverStripe\ORM\ManyManyList|\Category[] Categorys()
+ * @method \SilverStripe\ORM\ManyManyList|\Category[] Categories()
  * @method \SilverStripe\ORM\ManyManyList|\Type[] Types()
  * @method \SilverStripe\ORM\ManyManyList|\Store[] Stores()
  * @method \SilverStripe\ORM\ManyManyList|\HouseMember[] HouseMembers()
@@ -21,17 +21,17 @@ class Payment extends DataObject
     const SUM = 'Sum';
     const DATE_OF_PAYMENT = 'DateOfPayment';
     const TYPES = Type::class . 's';
-    const CATEGORYS = Category::class . 's';
+    const CATEGORIES = 'Categories';
     const STORES = Store::class . 's';
     const HOUSE_MEMBERS = HouseMember::class . 's';
 
     private static $db = [
-        self::SUM => DBConstants::INT,
+        self::SUM => DBConstants::FLOAT,
         self::DATE_OF_PAYMENT => DBConstants::DATETIME
     ];
 
     private static $many_many = [
-        self::CATEGORYS => Category::class,
+        self::CATEGORIES => Category::class,
         self::TYPES => Type::class,
         self::STORES => Store::class
     ];
@@ -49,55 +49,67 @@ class Payment extends DataObject
 
     public function PaymentCategoryTitles()
     {
-        $categories = $this->Categorys();
-        if ($this->ID === 0 || !$categories) {
-            return 'Missing categories';
-        }
-
-        $titles = '';
-        foreach ($categories as $category) {
-            if ($titles === '') {
-                $titles .= $category->Title;
-            } else {
-                $titles .= ', ' . $category->Title;
-            }
-        }
-        return $titles;
+        $categories = $this->Categories();
+        return self::buildTitleStr($categories);
     }
 
     public function PaymentTypeTitles()
     {
         $types = $this->Types();
-        if ($this->ID === 0 || !$types) {
-            return 'Missing types';
+        return self::buildTitleStr($types);
+    }
+
+    public function PaymentStoreTitles()
+    {
+        $stores = $this->Stores();
+        return self::buildTitleStr($stores);
+    }
+
+    private static function buildTitleStr($list)
+    {
+        if (!$list->exists()) {
+            return '';
         }
 
         $titles = '';
-        foreach ($types as $type) {
+        foreach ($list as $item) {
             if ($titles === '') {
-                $titles .= $type->Title;
+                $titles .= $item->Title;
             } else {
-                $titles .= ', ' . $type->Title;
+                $titles .= ', ' . $item->Title;
             }
         }
         return $titles;
     }
 
-    public function PaymentStoreTitles()
+    /**
+     * @return \SilverStripe\ORM\ValidationResult
+     */
+    public function validate()
     {
-        $types = $this->Stores();
-        if ($this->ID === 0 || !$types) {
-            return 'Missing stores';
+        $result = parent::validate();
+        $dateNow = date('Y-m-d H:i:s');
+
+        if (empty($this->Sum)) {
+            $result->addError('Sum cannot be zero');
         }
 
-        $titles = '';
-        foreach ($types as $type) {
-            if ($titles === '') {
-                $titles .= $type->Title;
-            } else {
-                $titles .= ', ' . $type->Title;
-            }
+        if (empty($this->DateOfPayment)) {
+            $result->addError('Date of payment cannot be empty');
+        } else if (strtotime($this->DateOfPayment) > strtotime($dateNow)) {
+            $result->addError('Date of payment cannot greater than today, DateOfPayment:' . $this->DateOfPayment . ', Now: ' . $dateNow);
         }
-        return $titles;
+
+        if (!$this->Categories()->exists()) {
+            $result->addError('Please select a category');
+        } else if (!$this->Types()->exists()) {
+            $result->addError('Please select a type');
+        } else if (!$this->Stores()->exists()) {
+            $result->addError('Please select a store');
+        } else if (!$this->HouseMembers()->exists()) {
+            $result->addError('Your account does not belong to a group, please notify the admin.');
+        }
+
+        return $result;
     }
 }
