@@ -11,6 +11,8 @@ import Multiselect from 'vue-multiselect';
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import Snotify from 'vue-snotify';
 import 'vue-snotify/styles/material.css';
+import 'swiper/dist/css/swiper.css'
+import {swiper, swiperSlide} from 'vue-awesome-swiper'
 
 Vue.use(VueCurrencyFilter,
     {
@@ -35,9 +37,30 @@ new Vue({
     components: {
         appDatepicker: Datepicker,
         appLoading: Loading,
-        appMultiselect: Multiselect
+        appMultiselect: Multiselect,
+        appSwiper: swiper,
+        appSwiperSlide: swiperSlide
     },
     data: {
+        darkMode: true,
+        swiperOption: {
+            speed: 2000,
+            parallax: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            }
+        },
+        slides: [],
+        index: 0,
         formData: {
             sum: 0,
             categoryIds: [],
@@ -61,7 +84,7 @@ new Vue({
             showStoreField: false,
             showAddPaymentOptions: false,
             showAddPayments: false,
-            showPaymentTable: true
+            showPaymentTable: false
         },
         tableData: {
             filter: {
@@ -97,6 +120,7 @@ new Vue({
         });
         // TODO: Use apollo for graphql. (this is for testing)
         this.getManagementGroup();
+        this.getSlides();
         this.getCategories();
         this.getTypes();
         this.getStores();
@@ -129,6 +153,29 @@ new Vue({
             }
             this.$snotify.success(`${name} saved`);
             return true;
+        },
+        getSlides() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    {
+                      readSlides {
+                        Text
+                        TextWhite
+                        Image {
+                          File {
+                            URL
+                          }
+                        }
+                      }
+                    }
+                  `
+                }
+            }).then(response => {
+                this.slides = response.data.data.readSlides;
+            });
         },
         getCategories() {
             axios({
@@ -254,8 +301,9 @@ new Vue({
                     query: `
                     {
                       readManagementGroups {
-                        ID,
+                        ID
                         Name
+                        Text
                       }
                     }
                   `

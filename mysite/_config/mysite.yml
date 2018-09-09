@@ -9,7 +9,7 @@ SilverStripe\GraphQL\Controller:
     scaffolding:
       types:
         ManagementGroup:
-          fields: [ID, Name]
+          fields: [ID, Name, Text]
           operations:
             read:
               args:
@@ -78,3 +78,10 @@ SilverStripe\GraphQL\Controller:
             read:
               paginate: false
             create: true
+        Slide:
+          fields: [ID, Text, Image, TextWhite]
+          operations:
+            read:
+              paginate: false
+        SilverStripe\Assets\Image:
+          fields: [ID, File]

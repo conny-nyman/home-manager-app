@@ -10,6 +10,7 @@
 
 /**
  * Class Dashboard
+ *
  */
 class Dashboard extends Page
 {
@@ -18,7 +19,12 @@ class Dashboard extends Page
 
 /**
  * Class DashboardController
+ *
+ * @property \Dashboard dataRecord
+ * @method \Dashboard data()
+ * @mixin \Dashboard
  */
 class DashboardController extends PageController
 {
+
 }

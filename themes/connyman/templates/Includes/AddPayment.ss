@@ -33,10 +33,10 @@
     <div class="col-md-3">
         <div class="row">
             <h3>Date of payment</h3>
-            <app-datepicker placeholder="Select date" format="dd/MM/yyyy" :clear-button="true" :bootstrap-styling="true" v-model="formData.dateOfPayment"></app-datepicker>
+            <app-datepicker class="text-dark" placeholder="Select date" format="dd/MM/yyyy" :clear-button="true" :bootstrap-styling="true" v-model="formData.dateOfPayment"></app-datepicker>
         </div>
         <div class="row my-4 d-flex align-items-center">
-            <button type="button" class="btn btn-sm btn-primary" @click="savePayment">Save</button>
+            <button type="button" class="btn btn-sm btn-outline-info" @click="savePayment">Save</button>
         </div>
     </div>
 </div>

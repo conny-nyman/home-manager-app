@@ -20,7 +20,7 @@
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 </head>
 <body>
-<div id="app" class="container-fluid">
+<div id="app" class="container-fluid p-0">
     $Layout
     <app-loading :show="loadingSpinner.show" :label="loadingSpinner.label"></app-loading>
     <vue-snotify></vue-snotify>

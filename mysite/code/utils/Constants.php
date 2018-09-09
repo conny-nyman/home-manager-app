@@ -13,4 +13,5 @@ class DBConstants
     const INT = 'Int';
     const FLOAT = 'Float';
     const DATETIME = 'Datetime';
+    const BOOLEAN = 'Boolean';
 }
