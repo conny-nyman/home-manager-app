@@ -8,7 +8,7 @@
                     <input type="text" class="form-control" placeholder="Title" v-model="paymentOptions.categoryTitle">
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-outline-info waves-effect" @click="saveCategory">Add</button>
+                    <button type="button" class="btn btn-sm btn-outline-info waves-effect" @click="saveCategory">Add</button>
                 </div>
             </div>
         </transition>
@@ -22,7 +22,7 @@
                     <input type="text" class="form-control" placeholder="Title" v-model="paymentOptions.typeTitle">
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-outline-default waves-effect" @click="saveType">Add</button>
+                    <button type="button" class="btn btn-sm btn-outline-info waves-effect" @click="saveType">Add</button>
                 </div>
             </div>
         </transition>
@@ -36,9 +36,10 @@
                     <input type="text" class="form-control" placeholder="Title" v-model="paymentOptions.storeTitle">
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-outline-success waves-effect" @click="saveStore">Add</button>
+                    <button type="button" class="btn btn-sm btn-outline-info waves-effect" @click="saveStore">Add</button>
                 </div>
             </div>
         </transition>
     </div>
 </div>
+<hr :class="{'bg-white' : darkMode}">

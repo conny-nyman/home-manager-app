@@ -6,12 +6,17 @@ import moment from 'moment'
 // Components
 import Datepicker from 'vuejs-datepicker';
 import Loading from 'vue-full-loading';
-import Multiselect from 'vue-multiselect';
 import VueCurrencyFilter from 'vue-currency-filter';
+import Multiselect from 'vue-multiselect';
+import "vue-multiselect/dist/vue-multiselect.min.css";
+import Snotify from 'vue-snotify';
+import 'vue-snotify/styles/material.css';
+import 'swiper/dist/css/swiper.css'
+import {swiper, swiperSlide} from 'vue-awesome-swiper'
 
 Vue.use(VueCurrencyFilter,
     {
-        symbol : '€',
+        symbol: '€',
         thousandsSeparator: '.',
         fractionCount: 2,
         fractionSeparator: ',',
@@ -19,9 +24,11 @@ Vue.use(VueCurrencyFilter,
         symbolSpacing: true
     });
 
+Vue.use(Snotify);
+
 Vue.filter('formatDate', value => {
     if (value) {
-        return moment(String(value)).format('DD/MM/YYYY hh:mm')
+        return moment(String(value)).format('DD/MM/YYYY HH:mm')
     }
 });
 
@@ -30,17 +37,39 @@ new Vue({
     components: {
         appDatepicker: Datepicker,
         appLoading: Loading,
-        appMultiselect: Multiselect
+        appMultiselect: Multiselect,
+        appSwiper: swiper,
+        appSwiperSlide: swiperSlide
     },
     data: {
+        darkMode: true,
+        swiperOption: {
+            speed: 2000,
+            parallax: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            }
+        },
+        slides: [],
+        index: 0,
         formData: {
             sum: 0,
             categoryIds: [],
             typeIds: [],
             storeIds: [],
-            dateOfPayment: ''
+            dateOfPayment: moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
         },
         paymentOptions: {
+            managementGroup: {},
             houseMembers: [],
             categories: [],
             types: [],
@@ -55,7 +84,7 @@ new Vue({
             showStoreField: false,
             showAddPaymentOptions: false,
             showAddPayments: false,
-            showPaymentTable: true
+            showPaymentTable: false
         },
         tableData: {
             filter: {
@@ -63,8 +92,8 @@ new Vue({
                 categories: [],
                 types: [],
                 stores: [],
-                startDate: '',
-                endDate: ''
+                startDate: moment().startOf('month').format('YYYY-MM-DD'),
+                endDate: moment().endOf('month').format('YYYY-MM-DD')
             },
             payments: {}
         },
@@ -90,6 +119,8 @@ new Vue({
             return Promise.reject(error);
         });
         // TODO: Use apollo for graphql. (this is for testing)
+        this.getManagementGroup();
+        this.getSlides();
         this.getCategories();
         this.getTypes();
         this.getStores();
@@ -98,23 +129,54 @@ new Vue({
     },
     computed: {
         paymentSum() {
-            if (this.tableData.payments.edges) {
-                return this.tableData.payments.edges.map(item => item.node.Sum).reduce((prev, next) => prev + next);
+            if (Array.isArray(this.tableData.payments)) {
+                return this.tableData.payments.map(item => item.Sum).reduce((prev, next) => prev + next);
             }
             return '';
         },
         sortedPayments() {
-            if (this.tableData.payments.edges) {
-                this.tableData.payments.edges.sort((a, b) => {
-                    return new Date(b.node.DateOfPayment) - new Date(a.node.DateOfPayment);
+            if (Array.isArray(this.tableData.payments)) {
+                this.tableData.payments.sort((a, b) => {
+                    return new Date(b.DateOfPayment) - new Date(a.DateOfPayment);
                 });
-                return this.tableData.payments.edges;
+                return this.tableData.payments;
             } else {
                 return []
             }
         }
     },
     methods: {
+        validateResponse(response, name) {
+            if (response.data.errors) {
+                this.$snotify.error(response.data.errors[0].message);
+                return false;
+            }
+            this.$snotify.success(`${name} saved`);
+            return true;
+        },
+        getSlides() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    {
+                      readSlides {
+                        Text
+                        TextWhite
+                        Image {
+                          File {
+                            URL
+                          }
+                        }
+                      }
+                    }
+                  `
+                }
+            }).then(response => {
+                this.slides = response.data.data.readSlides;
+            });
+        },
         getCategories() {
             axios({
                 url: 'graphql',
@@ -184,45 +246,25 @@ new Vue({
                       StartDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.startDate).format('YYYY-MM-DD') : ''}"
                       EndDate: "${ this.tableData.filter.endDate ? moment(this.tableData.filter.endDate).format('YYYY-MM-DD') : ''}"
                       ) {
-                        edges {
-                          node {
-                            ID
-                            Sum
-                            DateOfPayment
-                            HouseMembers {
-                              edges {
-                                node {
-                                  ID
-                                  FirstName
-                                  Surname
-                                }
-                              }
-                            }
-                            Categorys {
-                              edges {
-                                node {
-                                  ID
-                                  Title
-                                }
-                              }
-                            }
-                            Types {
-                              edges {
-                                node {
-                                  ID
-                                  Title
-                                }
-                              }
-                            }
-                            Stores {
-                              edges {
-                                node {
-                                  ID
-                                  Title
-                                }
-                              }
-                            }
-                          }
+                        ID
+                        Sum
+                        DateOfPayment
+                        HouseMembers {
+                              ID
+                              FirstName
+                              Surname
+                        }
+                        Categories {
+                              ID
+                              Title
+                        }
+                        Types {
+                              ID
+                              Title
+                        }
+                        Stores {
+                              ID
+                              Title
                         }
                       }
                     }
@@ -251,55 +293,123 @@ new Vue({
                 this.paymentOptions.houseMembers = response.data.data.readHouseMembers;
             });
         },
-        saveCategory() {
-            axios.post('paymentoptions/saveCategory',
-                JSON.stringify(this.paymentOptions.categoryTitle),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+        getManagementGroup() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    {
+                      readManagementGroups {
+                        ID
+                        Name
+                        Text
+                      }
                     }
-                }).then(() => {
-                this.paymentOptions.categoryTitle = '';
-                this.getCategories();
+                  `
+                }
+            }).then(response => {
+                this.paymentOptions.managementGroup = response.data.data.readManagementGroups[0];
+            });
+        },
+        saveCategory() {
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createCategory(Input: {Title: "${this.paymentOptions.categoryTitle}"}) {
+                        ID
+                        Title
+                      }
+                    }
+                  `
+                }
+            }).then((response) => {
+                if (this.validateResponse(response, 'Category')) {
+                    this.paymentOptions.categoryTitle = '';
+                    this.getCategories();
+                }
             });
         },
         saveType() {
-            axios.post('paymentoptions/saveType',
-                JSON.stringify(this.paymentOptions.typeTitle),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createType(Input: {Title: "${this.paymentOptions.typeTitle}"}) {
+                        ID
+                        Title
+                      }
                     }
-                }).then(() => {
-                this.paymentOptions.typeTitle = '';
-                this.getTypes();
+                  `
+                }
+            }).then((response) => {
+                if (this.validateResponse(response, 'Type')) {
+                    this.paymentOptions.typeTitle = '';
+                    this.getTypes();
+                }
             });
         },
         saveStore() {
-            axios.post('paymentoptions/saveStore',
-                JSON.stringify(this.paymentOptions.storeTitle),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createStore(Input: {Title: "${this.paymentOptions.storeTitle}"}) {
+                        ID
+                        Title
+                      }
                     }
-                }).then(() => {
-                this.paymentOptions.storeTitle = '';
-                this.getStores();
+                  `
+                }
+            }).then((response) => {
+                if (this.validateResponse(response, 'Store')) {
+                    this.paymentOptions.storeTitle = '';
+                    this.getStores();
+                }
             });
         },
         savePayment() {
-            this.formData.dateOfPayment ? moment(this.formData.dateOfPayment).format('YYYY-MM-DD') : '';
-            axios.post('payments/savePayment',
-                JSON.stringify(this.formData),
-                {
-                    headers: {
-                        'Content-type': 'application/json',
+            axios({
+                url: 'graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation {
+                      createPayment(
+                      Input: {Sum: ${this.formData.sum}, DateOfPayment: "${this.formData.dateOfPayment ? moment(this.formData.dateOfPayment).format('YYYY-MM-DD HH:mm:ss') : ''}"}, 
+                      CategoryIDs: "${this.formData.categoryIds.map(i => i.ID).join(" ")}", 
+                      TypeIDs: "${this.formData.typeIds.map(i => i.ID).join(" ")}", 
+                      StoreIDs: "${this.formData.storeIds.map(i => i.ID).join(" ")}") {
+                        ID
+                        Sum
+                        Categories {
+                          ID
+                          Title
+                        }
+                        Types {
+                          ID
+                          Title
+                        }
+                        Stores {
+                          ID
+                          Title
+                        }
+                      }
                     }
-                })
-                .then(() => this.getPayments())
-                .catch(error => {
-                    console.log(error)
-                });
+                  `
+                }
+            }).then((response) => {
+                if (this.validateResponse(response, 'Payment')) {
+                    this.getPayments();
+                }
+            });
         }
     }
 });

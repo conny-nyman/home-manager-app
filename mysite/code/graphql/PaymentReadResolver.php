@@ -22,17 +22,17 @@ class PaymentReadResolver implements ResolverInterface
         // Always filter this.
         $list = Payment::get()->filter('HouseMembers.ManagementGroup.ID', PermissionUtil::getCurrentMemberGroup()->ID);
 
-        $houseMemberIDS = self::strIDsToArray($args, 'HouseMemberIDs');
-        $categoryIDS = self::strIDsToArray($args, 'CategoryIDs');
-        $typeIDS = self::strIDsToArray($args, 'TypeIDs');
-        $storeIDS = self::strIDsToArray($args, 'StoreIDs');
+        $houseMemberIDS = GraphqlResolverUtil::strIDsToArray($args, 'HouseMemberIDs');
+        $categoryIDS = GraphqlResolverUtil::strIDsToArray($args, 'CategoryIDs');
+        $typeIDS = GraphqlResolverUtil::strIDsToArray($args, 'TypeIDs');
+        $storeIDS = GraphqlResolverUtil::strIDsToArray($args, 'StoreIDs');
 
         $list = self::appendToFilterIfNotNull('HouseMembers.ID', $houseMemberIDS, $list);
-        $list = self::appendToFilterIfNotNull('Categorys.ID', $categoryIDS, $list);
+        $list = self::appendToFilterIfNotNull('Categories.ID', $categoryIDS, $list);
         $list = self::appendToFilterIfNotNull('Types.ID', $typeIDS, $list);
         $list = self::appendToFilterIfNotNull('Stores.ID', $storeIDS, $list);
 
-        $list= self::addDateFilters($list, $args);
+        $list = self::addDateFilters($list, $args);
 
         return $list;
     }
@@ -44,32 +44,15 @@ class PaymentReadResolver implements ResolverInterface
      */
     private static function addDateFilters($list, $args)
     {
-        if (isset($args['StartDate']) && isset($args['EndDate']) && !empty($args['StartDate']) && !empty($args['EndDate'])) {
+        if (isset($args['StartDate']) && !empty($args['StartDate'])) {
             $startDate = date("d-m-Y", strtotime($args['StartDate']));
+            $list = $list->filter('DateOfPayment:GreaterThanOrEqual', $startDate);
+        }
+        if (isset($args['EndDate']) && !empty($args['EndDate'])) {
             $endDate = date("d-m-Y", strtotime($args['EndDate']));
-
-            $list = $list->filter([
-                'DateOfPayment:GreaterThanOrEqual' => $startDate,
-                'DateOfPayment:LessThanOrEqual' => $endDate
-            ]);
-        } else {
-            // Default, filter only this month's payments.
-            $list = $list->filter('DateOfPayment:GreaterThanOrEqual', date('01-m-Y'));
+            $list = $list->filter('DateOfPayment:LessThanOrEqual', $endDate);
         }
         return $list;
-    }
-
-    /**
-     * @param $args
-     * @param string $key
-     * @return array
-     */
-    private static function strIDsToArray($args, $key)
-    {
-        if (isset($args[$key]) && !empty($args[$key])) {
-            return explode(" ", $args[$key]);
-        }
-        return [];
     }
 
     /**

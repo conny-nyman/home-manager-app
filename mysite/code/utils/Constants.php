@@ -11,5 +11,7 @@ class DBConstants
     const VARCHAR_255 = 'Varchar(255)';
     const TEXT = 'Text';
     const INT = 'Int';
+    const FLOAT = 'Float';
     const DATETIME = 'Datetime';
+    const BOOLEAN = 'Boolean';
 }

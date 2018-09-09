@@ -1,22 +1,27 @@
 /* Add your scss here.. */
 /* @import "../../../node_modules/bootstrap/scss/bootstrap.scss"; */
-@import "../../../node_modules/vue-multiselect/dist/vue-multiselect.min.css";
 
 body {
-    background-color: grey;
+  background-color: #1A1B1B;
 }
 
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
-    // TODO: Override default checkbox bg-color?
-    // background-color: #ffbd44;
+  // TODO: Override default checkbox bg-color?
+  // background-color: #ffbd44;
 }
 
 /* Vue JS transitions */
 .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+  transition: opacity .5s;
 }
 
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
 {
-    opacity: 0;
+  opacity: 0;
+}
+
+.shadow-all-corners {
+  -moz-box-shadow: 0 0 20px #ccc;
+  -webkit-box-shadow: 0 0 20px #ccc;
+  box-shadow: 0 0 20px #ccc;
 }
