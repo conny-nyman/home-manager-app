@@ -384,9 +384,9 @@ new Vue({
                     mutation {
                       createPayment(
                       Input: {Sum: ${this.formData.sum}, DateOfPayment: "${this.formData.dateOfPayment ? moment(this.formData.dateOfPayment).format('YYYY-MM-DD HH:mm:ss') : ''}"}, 
-                      CategoryIDs: "${this.formData.categoryIds.join(" ")}", 
-                      TypeIDs: "${this.formData.typeIds.join(" ")}", 
-                      StoreIDs: "${this.formData.storeIds.join(" ")}") {
+                      CategoryIDs: "${this.formData.categoryIds.map(i => i.ID).join(" ")}", 
+                      TypeIDs: "${this.formData.typeIds.map(i => i.ID).join(" ")}", 
+                      StoreIDs: "${this.formData.storeIds.map(i => i.ID).join(" ")}") {
                         ID
                         Sum
                         Categories {
