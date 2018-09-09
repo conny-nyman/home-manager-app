@@ -1,26 +1,12 @@
 # home-manager-app
 
+![Demo image](https://cdn.pbrd.co/images/HD7F7pL.png)
+
+**Online demo project coming soon!**
+
 | Main features | Status|
 | ------ | ------ |
-| Budget manager| Under construction|
-| Todo list | Not implemented|
-| Reminder list | Not implemented |
-| Loan list| Not implemented |
-
-| Todo| Status|
-| ------ | ------ |
-| Dynamic frontend (Vue)| Under construction|
-| Replace DashboardController with PaymentController | Implemented |
-| DataObject validation | (Payment model missing) |
-| REST API| Replaced by GraphQL |
-| GraphQL | Implemented
-| Require Auth | Implemented |
-| Split HTML to includes | Implemented |
-| Filter by StartDate and EndDate | Implemented |
-| Styling | Under construction |
-
-Change timezone on server
-```
-[Date]
-date.timezone ="Europe/Helsinki"
-```
+| Payment tracker| Implemented |
+| Todo list | Coming soon |
+| Reminder list (recurring todos) | Coming soon |
+| Loan list| Coming soon |
