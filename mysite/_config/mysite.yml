@@ -4,7 +4,16 @@ Name: myproject
 SilverStripe\Core\Manifest\ModuleManifest:
   project: mysite
 
+SilverStripe\GraphQL\Auth\Handler:
+  authenticators:
+  - class: SilverStripe\GraphQL\Auth\BasicAuthAuthenticator
+    priority: 100
+
 SilverStripe\GraphQL\Controller:
+  cors:
+    Enabled: true
+    Allow-Origin: '*'
+    Allow-Methods: 'GET, PUT, DELETE, OPTIONS'
   schema:
     scaffolding:
       types:

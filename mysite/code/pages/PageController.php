@@ -32,8 +32,9 @@ class PageController extends ContentController
     protected function init()
     {
         parent::init();
-        Requirements::css('resources/themes/connyman/dist/app.css');
-        Requirements::css('resources/themes/connyman/dist/editor.css');
-        Requirements::javascript('resources/themes/connyman/dist/app.js');
+//        Require these in subPage?
+//        Requirements::css('resources/themes/connyman/dist/app.css');
+//        Requirements::css('resources/themes/connyman/dist/editor.css');
+//        Requirements::javascript('resources/themes/connyman/dist/app.js');
     }
 }
