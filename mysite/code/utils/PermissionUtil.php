@@ -7,6 +7,7 @@
  */
 
 use SilverStripe\Security\Security;
+use SilverStripe\Security\Member;
 
 class PermissionUtil
 {
@@ -47,9 +48,46 @@ class PermissionUtil
      */
     public static function getCurrentMemberGroup()
     {
+        if (!Security::getCurrentUser()) {
+            if (!self::getMemberFromBasicAuth()) {
+                // no member logged in, cannot get MemberGroup.
+                return 0;
+            }
+        }
+
         $mGroup = ManagementGroup::get()->filter('HouseMembers.ID', Security::getCurrentUser()->ID);
         if ($mGroup->exists()) {
             return $mGroup->first();
         }
+    }
+
+    /**
+     * Used during development only, need to implement JSON Web Token authentication
+     */
+    private static function getMemberFromBasicAuth()
+    {
+        $basicAuth = $_SERVER['HTTP_AUTHORIZATION'];
+        if ($basicAuth && !empty($basicAuth)) {
+            $loginCredentials = self::getLoginCredentials($basicAuth);
+
+            // The same authorization credentials passed the base controller auth, so email and pass should be valid.
+            $member = Member::get()->filter('Email', $loginCredentials[0])->first();
+
+            if ($member->exists()) {
+                Security::setCurrentUser($member);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $basicAuth
+     * @return array
+     */
+    private static function getLoginCredentials($basicAuth)
+    {
+        $emailAndPass = explode('Basic ', $basicAuth)[1];
+        return explode(':', base64_decode($emailAndPass));
     }
 }

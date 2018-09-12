@@ -1,9 +1,9 @@
 <template>
     <div class="payment-tracker-page">
-        <h1>Payment tracker component</h1>
         <div class="container p-0 shadow-all-corners">
             <!--Header-->
             <div class="container py-3 bg-white" :class="{'bg-dark': darkMode, 'text-white': darkMode}">
+                <h1>Payment tracker component</h1>
                 <!--ManageFeatures-->
                 <!--<template v-if="extraFields.showAddPaymentOptions">-->
                     <!--loop PaymentOptions--->

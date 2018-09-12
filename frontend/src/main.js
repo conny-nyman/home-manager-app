@@ -9,7 +9,8 @@ import VueApollo from "vue-apollo"
 const apolloProvider = new VueApollo({
     defaultClient: new ApolloClient({
         uri: "http://localhost/house-manager-app/graphql",
-        headers: { "authorization": "Basic YWRtaW46YWRtaW4=" }
+        // Basic Y29ubnk6Y29ubnkxMjM= test account.
+        headers: { "authorization": "Basic Y29ubnk6Y29ubnkxMjM=" }
     })
 })
 

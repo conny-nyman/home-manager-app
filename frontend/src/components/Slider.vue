@@ -37,7 +37,9 @@
             slides: {
                 query: GET_SLIDES_QUERY,
                 update(data) {
-                    return data.readSlides;
+                    if (data.readSlides) {
+                        return data.readSlides;
+                    }
                 }
             }
         }
