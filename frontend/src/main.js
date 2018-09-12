@@ -18,6 +18,6 @@ Vue.use(VueApollo)
 Vue.config.productionTip = false
 
 new Vue({
-    render: h => h(App),
-    apolloProvider
+    apolloProvider,
+    render: h => h(App)
 }).$mount('#app')
