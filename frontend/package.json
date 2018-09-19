@@ -14,7 +14,8 @@
     "mdbvue": "^4.6.0",
     "vue": "^2.5.17",
     "vue-apollo": "^3.0.0-beta.25",
-    "vue-awesome-swiper": "^3.1.3"
+    "vue-awesome-swiper": "^3.1.3",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
