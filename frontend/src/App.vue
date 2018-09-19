@@ -1,10 +1,10 @@
 <template>
-    <div id="app" class="container-fluid p-0">
+    <div id="app" class="container-fluid p-0 bg-dark">
         <div class="container p-0 shadow-all-corners">
             <!--<app-loading :show="loadingSpinner.show" :label="loadingSpinner.label"></app-loading>-->
             <!--<vue-snotify></vue-snotify>-->
             <app-header></app-header>
-            <div v-if="mGroup.Name" class="py-3 text-white">
+            <div v-if="mGroup.Name" class="py-3 bg-white" :class="{'bg-dark': darkMode, 'text-white': darkMode}">
                 <h3 class="text-center">Welcome {{ mGroup.Name }}!</h3>
                 <p class="text-center">{{ mGroup.Text }}</p>
                 <hr :class="{'bg-white' : darkMode}">
@@ -18,7 +18,7 @@
     import Header from './components/Header.vue'
     import PaymentTracker from './components/PaymentTracker/PaymentTracker.vue'
     import {GET_MANAGEMENT_GROUPS_QUERY} from './constants/graphql'
-
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'app',
@@ -28,9 +28,13 @@
         },
         data() {
             return {
-                mGroup: {},
-                darkMode: true
+                mGroup: {}
             }
+        },
+        computed: {
+            ...mapGetters({
+                darkMode: 'darkMode'
+            })
         },
         apollo: {
             mGroup: {

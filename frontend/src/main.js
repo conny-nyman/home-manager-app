@@ -5,6 +5,7 @@ import 'mdbvue/build/css/mdb.css'
 import './app.scss'
 import ApolloClient from "apollo-boost"
 import VueApollo from "vue-apollo"
+import { store } from './store/store'
 
 const apolloProvider = new VueApollo({
     defaultClient: new ApolloClient({
@@ -20,5 +21,6 @@ Vue.config.productionTip = false
 
 new Vue({
     apolloProvider,
+    store,
     render: h => h(App)
 }).$mount('#app')
