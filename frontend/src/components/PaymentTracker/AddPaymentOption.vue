@@ -42,10 +42,12 @@
                     variables: {
                         title
                     }
-                }).then(data => {
-                    // add toaster
-                    console.log(data)
+                }).then(response => {
+                    this.$snotify.success(`${this.title} saved`)
                     this.title = ''
+                    // update category list with vuex
+                }).catch(error => {
+                    this.$snotify.error(error.message)
                 })
             }
         }

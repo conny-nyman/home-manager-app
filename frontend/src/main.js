@@ -7,6 +7,8 @@ import ApolloClient from "apollo-boost"
 import VueApollo from "vue-apollo"
 import { store } from './store/store'
 import HorizontalLine from './components/shared/HorizontalLine'
+import Snotify from 'vue-snotify';
+import 'vue-snotify/styles/material.css';
 
 const apolloProvider = new VueApollo({
     defaultClient: new ApolloClient({
@@ -17,7 +19,10 @@ const apolloProvider = new VueApollo({
 })
 
 Vue.use(VueApollo)
+Vue.use(Snotify)
+
 Vue.config.productionTip = false
+
 Vue.component('app-hr', HorizontalLine)
 
 new Vue({

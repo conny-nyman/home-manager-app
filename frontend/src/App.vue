@@ -10,6 +10,7 @@
                 <app-hr></app-hr>
             </div>
             <app-payment-tracker></app-payment-tracker>
+            <vue-snotify></vue-snotify>
         </div>
     </div>
 </template>

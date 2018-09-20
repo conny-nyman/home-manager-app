@@ -2,7 +2,7 @@
     <div class="row text-md-center">
         <div class="col-md-3">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="add-payment-options" value="add-payment-options">
+                <input type="checkbox" class="custom-control-input" id="add-payment-options" value="add-payment-options" @click="toggleShowAddPaymentOptions" :checked="showAddPaymentOptions">
                 <label class="custom-control-label" for="add-payment-options">Add payment options</label>
             </div>
         </div>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="col-md-12 px-0">
-            <hr :class="{'bg-white' : darkMode}">
+            <app-hr></app-hr>
         </div>
     </div>
 </template>
@@ -38,12 +38,14 @@
         name: "PaymentOptions",
         computed: {
             ...mapGetters({
-                darkMode: 'darkMode'
+                darkMode: 'darkMode',
+                showAddPaymentOptions: 'showAddPaymentOptions'
             })
         },
         methods: {
             ...mapMutations({
                 toggleDarkMode: 'toggleDarkMode',
+                toggleShowAddPaymentOptions: 'toggleShowAddPaymentOptions'
             })
         }
     }

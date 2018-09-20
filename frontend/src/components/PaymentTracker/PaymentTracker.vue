@@ -6,7 +6,7 @@
                 <!--<h1>Payment tracker component</h1>-->
                 <!--ManageFeatures-->
                 <app-manage-features></app-manage-features>
-                <app-add-payment-options></app-add-payment-options>
+                <app-add-payment-options v-if="showAddPaymentOptions"></app-add-payment-options>
                 <!--<template v-if="extraFields.showAddPaymentOptions">-->
                 <!--loop PaymentOptions--->
                 <!--</template>-->
@@ -37,7 +37,8 @@
         },
         computed: {
             ...mapGetters({
-                darkMode: 'darkMode'
+                darkMode: 'darkMode',
+                showAddPaymentOptions: 'showAddPaymentOptions'
             })
         }
     }
