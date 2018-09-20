@@ -7,7 +7,7 @@
             <div v-if="mGroup.Name" class="py-3 bg-white" :class="{'bg-dark': darkMode, 'text-white': darkMode}">
                 <h3 class="text-center">Welcome {{ mGroup.Name }}!</h3>
                 <p class="text-center">{{ mGroup.Text }}</p>
-                <hr :class="{'bg-white' : darkMode}">
+                <app-hr></app-hr>
             </div>
             <app-payment-tracker></app-payment-tracker>
         </div>

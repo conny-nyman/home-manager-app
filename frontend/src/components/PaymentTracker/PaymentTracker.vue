@@ -6,6 +6,7 @@
                 <!--<h1>Payment tracker component</h1>-->
                 <!--ManageFeatures-->
                 <app-manage-features></app-manage-features>
+                <app-add-payment-options></app-add-payment-options>
                 <!--<template v-if="extraFields.showAddPaymentOptions">-->
                 <!--loop PaymentOptions--->
                 <!--</template>-->
@@ -23,11 +24,13 @@
 <script>
     import {mapGetters} from 'vuex'
     import ManageFeatures from './ManageFeatures'
+    import AddPaymentOptions from './AddPaymentOptions'
 
     export default {
         name: "PaymentTracker",
         components: {
             appManageFeatures: ManageFeatures,
+            appAddPaymentOptions: AddPaymentOptions,
         },
         data() {
             return {}
