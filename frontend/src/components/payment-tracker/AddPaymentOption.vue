@@ -26,6 +26,10 @@
             query: {
                 type: Object,
                 required: true
+            },
+            updateAction: {
+                type: String,
+                required: true
             }
         },
         data() {
@@ -46,6 +50,7 @@
                     this.$snotify.success(`${this.title} saved`)
                     this.title = ''
                     // update category list with vuex
+                    this.$store.dispatch(this.updateAction).then(() => console.log(`Updated ${this.name} list`))
                 }).catch(error => {
                     this.$snotify.error(error.message)
                 })

@@ -1,8 +1,8 @@
 <template>
     <div class="row m-3">
-        <app-add-payment-option name="Category" :query="createCategoryMutation"></app-add-payment-option>
-        <app-add-payment-option name="Type" :query="createTypeMutation"></app-add-payment-option>
-        <app-add-payment-option name="Store" :query="createStoreMutation"></app-add-payment-option>
+        <app-add-payment-option name="Category" :query="createCategoryMutation" updateAction="getCategories"></app-add-payment-option>
+        <app-add-payment-option name="Type" :query="createTypeMutation" updateAction="getTypes"></app-add-payment-option>
+        <app-add-payment-option name="Store" :query="createStoreMutation" updateAction="getStores"></app-add-payment-option>
         <app-hr></app-hr>
     </div>
 </template>

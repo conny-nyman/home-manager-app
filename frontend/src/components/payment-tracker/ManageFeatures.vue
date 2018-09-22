@@ -2,13 +2,13 @@
     <div class="row text-md-center">
         <div class="col-md-3">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="add-payment-options" value="add-payment-options" @click="toggleShowAddPaymentOptions" :checked="showAddPaymentOptions">
+                <input type="checkbox" class="custom-control-input" id="add-payment-options" value="add-payment-options" @click="toggleShowAddPaymentOptions" :checked="features.showAddPaymentOptions">
                 <label class="custom-control-label" for="add-payment-options">Add payment options</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="add-payments" value="add-payments">
+                <input type="checkbox" class="custom-control-input" id="add-payments" value="add-payments" @click="toggleShowAddPayment" :checked="features.showAddPayment">
                 <label class="custom-control-label" for="add-payments">Add payments</label>
             </div>
         </div>
@@ -39,13 +39,14 @@
         computed: {
             ...mapGetters({
                 darkMode: 'darkMode',
-                showAddPaymentOptions: 'showAddPaymentOptions'
+                features: 'features'
             })
         },
         methods: {
             ...mapMutations({
                 toggleDarkMode: 'toggleDarkMode',
-                toggleShowAddPaymentOptions: 'toggleShowAddPaymentOptions'
+                toggleShowAddPaymentOptions: 'toggleShowAddPaymentOptions',
+                toggleShowAddPayment: 'toggleShowAddPayment'
             })
         }
     }
