@@ -17,7 +17,7 @@
 
 <script>
     import Header from './components/Header.vue'
-    import PaymentTracker from './components/PaymentTracker/PaymentTracker.vue'
+    import PaymentTracker from './components/payment-tracker/PaymentTracker.vue'
     import {GET_MANAGEMENT_GROUPS_QUERY} from './constants/graphql'
     import {mapGetters} from 'vuex'
 
