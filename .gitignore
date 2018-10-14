@@ -8,3 +8,5 @@
 node_modules/
 mix-manifest.json
 themes/connyman/dist/
+fonts/
+images/
