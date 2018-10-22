@@ -85,3 +85,12 @@ SilverStripe\GraphQL\Controller:
               paginate: false
         SilverStripe\Assets\Image:
           fields: [ID, File]
+        Loan:
+          fields: [ID, Sum, DateOfLoan]
+          operations:
+            read:
+              paginate: false
+            create: true
+          nestedQueries:
+            HouseMembers:
+              paginate: false
