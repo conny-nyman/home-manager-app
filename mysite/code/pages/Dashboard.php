@@ -22,7 +22,7 @@ class Dashboard extends Page
  *
  * @property \Dashboard dataRecord
  * @method \Dashboard data()
- * @mixin \Dashboard
+ * @mixin \Dashboard dataRecord
  */
 class DashboardController extends PageController
 {
