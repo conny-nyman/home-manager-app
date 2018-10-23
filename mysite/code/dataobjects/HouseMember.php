@@ -9,8 +9,8 @@
  * @property int $ManagementGroupID
  * @method \ManagementGroup ManagementGroup()
  * @method \Loan Loan()
+ * @method \SilverStripe\ORM\DataList|\Loan[] Loans()
  * @method \SilverStripe\ORM\ManyManyList|\Payment[] Payments()
- * @method \SilverStripe\ORM\ManyManyList|\Loan[] Loans()
  */
 
 use SilverStripe\Security\Member;
@@ -28,9 +28,12 @@ class HouseMember extends Member
         self::MANAGEMENT_GROUP => self::MANAGEMENT_GROUP
     ];
 
+    private static $has_many = [
+        self::LOANS => Loan::class . '.' . Loan::BORROWER
+    ];
+
     private static $many_many = [
-        self::PAYMENTS => Payment::class,
-        self::LOANS => Loan::class
+        self::PAYMENTS => Payment::class
     ];
 
     private static $belongs_to = [

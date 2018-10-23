@@ -9,8 +9,9 @@
  * @property float $Sum
  * @property string $DateOfLoan
  * @property int $LenderID
+ * @property int $BorrowerID
  * @method \HouseMember Lender()
- * @method \SilverStripe\ORM\ManyManyList|\HouseMember[] HouseMembers()
+ * @method \HouseMember Borrower()
  */
 
 use SilverStripe\ORM\DataObject;
@@ -21,7 +22,7 @@ class Loan extends DataObject
     const SUM = 'Sum';
     const DATE_OF_LOAN = 'DateOfLoan';
     const LENDER = 'Lender';
-    const HOUSE_MEMBERS = HouseMember::class . 's';
+    const BORROWER = 'Borrower';
 
     private static $db = [
         self::SUM => DBConstants::FLOAT,
@@ -29,11 +30,8 @@ class Loan extends DataObject
     ];
 
     private static $has_one = [
-        self::LENDER => HouseMember::class
-    ];
-
-    private static $belongs_many_many = [
-        self::HOUSE_MEMBERS => HouseMember::class
+        self::LENDER => HouseMember::class,
+        self::BORROWER => HouseMember::class
     ];
 
     /**
