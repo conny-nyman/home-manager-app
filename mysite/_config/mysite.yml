@@ -87,6 +87,7 @@ SilverStripe\GraphQL\Controller:
           fields: [ID, File]
         Loan:
           fields: [ID, Sum, DateOfLoan]
+          fields: [ID, Sum, DateOfLoan, Lender, Borrower]
           operations:
             read:
               paginate: false

@@ -34,6 +34,13 @@ class Loan extends DataObject
         self::BORROWER => HouseMember::class
     ];
 
+    private static $summary_fields = [
+        self::SUM,
+        self::DATE_OF_LOAN => 'Date',
+        self::BORROWER . '.FirstName' => self::BORROWER,
+        self::LENDER . '.FirstName' => self::LENDER,
+    ];
+
     /**
      * @return \SilverStripe\ORM\ValidationResult
      */
@@ -56,10 +63,22 @@ class Loan extends DataObject
 
     private function isLenderSameAsCurrentUser()
     {
-        if (HouseMember::get()->byID($this->LenderID)->ID === Security::getCurrentUser()->ID) {
+        $houseMembers = HouseMember::get();
+        $lender = $houseMembers->byID($this->LenderID);
+        $currentUser = $houseMembers->byID(Security::getCurrentUser()->ID);
+
+        if (!$lender || !$currentUser) {
+            return false;
+        } else if ($lender->ID === $currentUser->ID) {
             return true;
         }
+
         return false;
     }
 
+    protected function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+        $this->BorrowerID = Security::getCurrentUser()->ID;
+    }
 }
