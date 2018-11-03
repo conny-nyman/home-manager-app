@@ -9,7 +9,7 @@ SilverStripe\GraphQL\Controller:
     Enabled: true # Off by default
     Allow-Origin: '*' # Deny all by default
     Allow-Headers: 'Authorization, Content-Type'
-    Allow-Methods:  'GET, POST, OPTIONS'
+    Allow-Methods:  'GET, POST, DELETE, OPTIONS'
     Max-Age:  86400  # 86,400 seconds = 1 day.
   schema:
     scaffolding:
@@ -97,3 +97,4 @@ SilverStripe\GraphQL\Controller:
             read:
               paginate: false
             create: true
+            delete: true
